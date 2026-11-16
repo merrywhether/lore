@@ -29,8 +29,20 @@ for entry in "$repo"/* "$repo"/.[!.]*; do
 	[[ -e $entry ]] || continue
 	case $(basename "$entry") in
 	readme.md | agents.md | projects | skills | repos | .git | .gitignore | .gitleaks.toml) ;;
-	*) problem "unexpected top-level entry: $(basename "$entry")" ;;
+	*) problem "unexpected top-level entry: $(basename "$entry") (scripts, hooks and other tooling go in skills/<name>/)" ;;
 	esac
+done
+
+for page in "$repo"/repos/*.md; do
+	[[ -f $page ]] || continue
+	if [[ $(head -1 "$page") != "---" ]]; then
+		problem "repos/$(basename "$page") has no frontmatter"
+		continue
+	fi
+	for key in repo upstream local; do
+		awk -v key="$key" 'NR > 1 && $0 == "---" { exit 1 } index($0, key ": ") == 1 { found = 1; exit } END { exit !found }' "$page" ||
+			problem "repos/$(basename "$page") frontmatter has no '$key'"
+	done
 done
 
 if [[ $problems -eq 0 ]]; then echo "$repo: ok"; else exit 1; fi

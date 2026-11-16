@@ -81,7 +81,10 @@ pull request, an issue, a public repo) unless the user asks.
 
 - `scripts/routing.sh [--root <dir>] [--write]` builds the routing file from
   each scope repo's readme frontmatter (`scope`, `machines`, `writes`). It
-  prints the result; `--write` replaces `~/lore/readme.md`. Don't use `--write`
-  where something else (a dotfiles template) owns that file.
+  prints the result; `--write` replaces `~/lore/readme.md`. A scope whose readme
+  lacks a field is left out with a warning, and `--write` refuses to write until
+  every scope has all three, so a working routing file is never replaced by a
+  worse one. Don't use `--write` where something else (a dotfiles template) owns
+  that file.
 - `scripts/check.sh <scope repo>` checks a scope repo against the readme
-  contract and the layout.
+  contract, the layout and its upstream pages' frontmatter.
