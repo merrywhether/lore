@@ -150,6 +150,11 @@ broader scope without the user's review.
 
 Don't trust the install paths; check them. For each harness wired in step 5:
 
+Run both cold reads from a code repo's checkout, where real sessions start.
+Never run them from a clone of this repo or from `~/lore`: there an agent could
+answer by reading the files in the current folder, and a broken install would
+pass.
+
 1. **The skill folders** `lore`, `lore-setup` and `lore-collab` exist in a
    folder that harness reads.
 2. **A cold read of the skills,** in a fresh non-interactive run:
@@ -160,8 +165,9 @@ Don't trust the install paths; check them. For each harness wired in step 5:
 
    It passes if the answer names all three skills.
 3. **A cold read of the routing,** the same way: "Where would you write a note
-   about <one of the user's projects>? Name the file." It passes if the answer
-   comes from `~/lore/readme.md` and names a path in the right scope.
+   about <one of the user's projects>? Name the file, and the file that told
+   you." It passes if it names a path in the right scope and says the routing
+   file, `~/lore/readme.md`, told it.
 
 Report pass or fail per harness and per check, with the harness's version
 (`claude --version`, `codex --version`, `opencode --version`), not just "done".
