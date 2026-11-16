@@ -4,7 +4,8 @@
 	"packageManager": "pnpm@12.5.1",
 	"scripts": {
 		"format": "biome format --write .",
-		"lint": "biome check --error-on-warnings . && bash scripts/check-scripts.sh"
+		"lint": "biome check --error-on-warnings . && bash scripts/check-scripts.sh",
+		"test": "bash tests/run.sh"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.7"
