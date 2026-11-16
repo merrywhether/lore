@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # Build the lore routing file from each scope repo's readme frontmatter.
 # Prints it, or writes <root>/readme.md with --write. The root defaults to ~/lore.
-# A scope whose readme lacks a field is skipped with a warning; with --write, nothing is
-# written until every scope has all three, so a working routing file is never replaced by a
-# worse one.
+# Every folder in the root is a scope. One without a usable readme.md (missing, named in
+# another case, or lacking a field) is left out with a warning, and --write writes nothing
+# until every scope is usable, so a working routing file is never replaced by a worse one.
 set -euo pipefail
+
+scripts=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+# shellcheck source=frontmatter.sh
+source "$scripts/frontmatter.sh"
 
 root="$HOME/lore" write=no
 while [[ $# -gt 0 ]]; do
@@ -15,25 +19,35 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-field() { awk -v key="$2" 'NR == 1 && $0 != "---" { exit } NR > 1 && $0 == "---" { exit } index($0, key ": ") == 1 { print substr($0, length(key) + 3); exit }' "$1"; }
-
 fields=(scope machines writes)
 
-# Prints "<scope>: <problem>" for each scope readme missing a field.
+# Prints "<scope>: <problem>" for each scope folder without a usable readme.md.
 problems() {
-	local readme name key
-	for readme in "$root"/*/readme.md; do
-		[[ -f $readme ]] || continue
-		name=$(basename "$(dirname "$readme")")
+	local dir name key why
+	for dir in "$root"/*/; do
+		dir=${dir%/}
+		name=$(basename "$dir")
+		if ! has_exact_file "$dir" readme.md; then
+			printf '%s: no readme.md (the name is lowercase)\n' "$name"
+			continue
+		fi
 		for key in "${fields[@]}"; do
-			[[ -n $(field "$readme" "$key") ]] || printf '%s: readme.md frontmatter has no "%s"\n' "$name" "$key"
+			why=$(frontmatter_problem "$dir/readme.md" "$key")
+			if [[ -n $why ]]; then
+				printf '%s: readme.md %s\n' "$name" "$why"
+				if [[ $why == "has no frontmatter" ]]; then break; fi
+			fi
 		done
 	done
 }
 
-complete() {
+# True when a scope folder has a usable readme.md.
+usable() {
 	local key
-	for key in "${fields[@]}"; do [[ -n $(field "$1" "$key") ]] || return 1; done
+	has_exact_file "$1" readme.md || return 1
+	for key in "${fields[@]}"; do
+		[[ -z $(frontmatter_problem "$1/readme.md" "$key") ]] || return 1
+	done
 }
 
 build() {
@@ -49,15 +63,16 @@ and `agents.md`.
 ## Scopes on this machine
 
 HEAD
-	local found=no readme name
-	for readme in "$root"/*/readme.md; do
-		[[ -f $readme ]] || continue
-		name=$(basename "$(dirname "$readme")")
-		complete "$readme" || continue
+	local found=no dir name readme
+	for dir in "$root"/*/; do
+		dir=${dir%/}
+		name=$(basename "$dir")
+		readme=$dir/readme.md
+		usable "$dir" || continue
 		found=yes
-		printf -- '- **`%s/`**: %s\n' "$name" "$(field "$readme" scope)"
-		printf '  - Cloned on: %s\n' "$(field "$readme" machines)"
-		printf '  - Writes here: %s\n' "$(field "$readme" writes)"
+		printf -- '- **`%s/`**: %s\n' "$name" "$(frontmatter_value "$readme" scope)"
+		printf '  - Cloned on: %s\n' "$(frontmatter_value "$readme" machines)"
+		printf '  - Writes here: %s\n' "$(frontmatter_value "$readme" writes)"
 		if [[ -f $root/$name/agents.md ]]; then
 			printf '  - Read in every session: [%s/agents.md](%s/agents.md)\n' "$name" "$name"
 		fi
@@ -87,11 +102,11 @@ missing=$(problems)
 if [[ -n $missing ]]; then
 	{
 		printf '%s\n' "$missing"
-		printf 'Add scope, machines and writes to the frontmatter of each readme above;\n'
-		printf 'skills/lore/scripts/check.sh <repo> lists anything else it needs.\n'
+		printf 'Each scope needs a readme.md whose frontmatter has scope, machines and writes,\n'
+		printf 'each one plain line. %s/check.sh <repo> lists anything else it needs.\n' "$scripts"
 	} >&2
 	if [[ $write == yes ]]; then
-		echo "routing.sh: not writing $root/readme.md until every scope has all three fields" >&2
+		echo "routing.sh: not writing $root/readme.md until every scope is fixed" >&2
 		exit 1
 	fi
 	echo "routing.sh: those scopes are left out below" >&2

@@ -49,13 +49,16 @@ top-level `bin/`, `hooks/` or loose file.
 
 ### The readme contract
 
-`readme.md` starts with YAML frontmatter between two `---` lines. The routing
-file is built from it, and every field is required:
+`readme.md` starts with this frontmatter. The routing file is built from it.
+Every field is required, and each is one plain `key: value` line: no quotes, and
+no block scalars (`>` or `|`), because the scripts read values as plain text.
 
 ```yaml
+---
 scope: Everything for the widget-app employer.
 machines: work machines only
 writes: Work for the employer, its repos and its colleagues' public work.
+---
 ```
 
 Then a `# Lore: <scope>` title, a short paragraph on the scope, and these
@@ -71,13 +74,15 @@ Other sections may follow, such as the answers a new machine's setup needs
 ### Upstream pages
 
 Every code repo with notes gets `repos/<code-repo>.md`, which starts with this
-frontmatter between `---` lines (`branch` is optional):
+frontmatter (`branch` is optional; the same plain-line rule applies):
 
 ```yaml
+---
 repo: example-lore/widget-app # owner/name
 upstream: git@github.com:example-lore/widget-app.git # fetch URL
 local: ~/Developer/widget-app
 branch: main # only for clones kept on a branch
+---
 ```
 
 After the frontmatter: a line linking the notes folder, then the clone command.
