@@ -145,3 +145,26 @@ Only after the user OKs the whole list:
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
+
+## 7. Check that each harness finds lore
+
+Don't trust the install paths; check them. For each harness wired in step 5:
+
+1. **The skill folders** `lore`, `lore-setup` and `lore-collab` exist in a
+   folder that harness reads.
+2. **A cold read of the skills,** in a fresh non-interactive run:
+   - Claude Code:
+     `claude -p "Which skills do you have whose name starts with lore? Name them."`
+   - Codex: `codex exec "<the same question>"`
+   - opencode: `opencode run "<the same question>"`
+
+   It passes if the answer names all three skills.
+3. **A cold read of the routing,** the same way: "Where would you write a note
+   about <one of the user's projects>? Name the file." It passes if the answer
+   comes from `~/lore/readme.md` and names a path in the right scope.
+
+Report pass or fail per harness and per check, with the harness's version
+(`claude --version`, `codex --version`, `opencode --version`), not just "done".
+For a failure, say what the harness answered and where it looked. When a harness
+passes, offer to add it to the "Verified so far" line in this repo's README,
+with its version, as a pull request the user approves.

@@ -23,6 +23,9 @@ itself; yours lives in your own private repos.
 | [lore-setup](skills/lore-setup/SKILL.md)   | Set up lore on a machine, by interview.                                          |
 | [lore-collab](skills/lore-collab/SKILL.md) | Coordinate several interactive agent sessions through a shared log kept in lore. |
 
+`lore-collab` is experimental: it leans on harness-specific features (Claude
+Code's background commands, `codex queue`) and has had the least testing.
+
 Each skill is a folder in the portable Agent Skills format: a `SKILL.md` with
 `name` and `description`, plus bash scripts.
 
@@ -41,6 +44,10 @@ Or copy or link each folder under `skills/` into the harness's skills folder:
 | Claude Code | `~/.claude/skills/<name>/`                                        |
 | Codex       | `~/.agents/skills/<name>/`                                        |
 | opencode    | `~/.config/opencode/skills/<name>/` (it also reads the two above) |
+
+These paths come from each harness's docs and haven't been checked on a real
+machine yet. `lore-setup` ends by checking that each harness finds the skills.
+Verified so far: none.
 
 Then ask your agent to "set up lore" and the `lore-setup` skill takes it from
 there: it creates or clones the scope repos, builds the routing file, points
