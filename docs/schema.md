@@ -43,16 +43,19 @@ Git's own files (`.gitignore`, a `.gitleaks.toml` allowlist) may sit beside
 these. A strict top level means an agent always knows where to look, and a stray
 file is easy to spot: `skills/lore/scripts/check.sh` reports one.
 
+A scope's private tooling (scripts, sync jobs, git hooks, the files they read)
+goes in `skills/<name>/`, with a `SKILL.md` saying when to run it. Never a
+top-level `bin/`, `hooks/` or loose file.
+
 ### The readme contract
 
-`readme.md` starts with frontmatter, which the routing file is built from:
+`readme.md` starts with YAML frontmatter between two `---` lines. The routing
+file is built from it, and every field is required:
 
-```markdown
----
-
-scope: Everything for the widget-app employer. machines: work machines only writes: Work for the
-employer, its repos and its colleagues' public work.
----
+```yaml
+scope: Everything for the widget-app employer.
+machines: work machines only
+writes: Work for the employer, its repos and its colleagues' public work.
 ```
 
 Then a `# Lore: <scope>` title, a short paragraph on the scope, and these
@@ -67,14 +70,14 @@ Other sections may follow, such as the answers a new machine's setup needs
 
 ### Upstream pages
 
-Every code repo with notes gets `repos/<code-repo>.md`:
+Every code repo with notes gets `repos/<code-repo>.md`, which starts with this
+frontmatter between `---` lines (`branch` is optional):
 
-```markdown
----
-
-repo: example-lore/widget-app # owner/name upstream: git@github.com:example-lore/widget-app.git #
-fetch URL local: ~/Developer/widget-app branch: <branch> # only for clones kept on a branch
----
+```yaml
+repo: example-lore/widget-app # owner/name
+upstream: git@github.com:example-lore/widget-app.git # fetch URL
+local: ~/Developer/widget-app
+branch: main # only for clones kept on a branch
 ```
 
 After the frontmatter: a line linking the notes folder, then the clone command.

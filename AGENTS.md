@@ -19,4 +19,9 @@ real lore comes in here.
   columns, which suits side-by-side review) and JSON; it's a tool for this repo
   only, so the skills still need nothing beyond bash, git and `awk`, and nothing
   formats anyone's scope repos.
+- **Fence frontmatter examples as `yaml`, never `markdown`:** Biome formats a
+  `markdown` fence's contents as Markdown and joins the fields into one line.
+- **Run `pnpm test` after changing a script or the schema.** It builds a scope
+  repo from the schema's own examples and runs the scripts on it, so the two
+  can't drift apart. CI runs it too.
 - Commits use Conventional Commits, `type(scope): description`.
