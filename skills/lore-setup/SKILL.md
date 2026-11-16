@@ -105,6 +105,9 @@ known folder names:
   folder's `workspace.json` names its checkout). They are transcripts, not
   notes: list how many sessions each checkout has and their titles, and ask
   whether a plan lives only there. Copy nothing from them.
+- **Never read credentials.** In the harness folders, look only at the notes,
+  memory and chat-history paths above: never at sign-in or key files (such as
+  `auth.json` or `.credentials.json`) or settings that hold tokens.
 - **Anywhere else:** ask the user whether notes live outside these places.
 
 ### Place them
@@ -153,7 +156,8 @@ Don't trust the install paths; check them. For each harness wired in step 5:
 Run both cold reads from a code repo's checkout, where real sessions start.
 Never run them from a clone of this repo or from `~/lore`: there an agent could
 answer by reading the files in the current folder, and a broken install would
-pass.
+pass. For the same reason, pick a checkout with no project-local copy of these
+skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
 
 1. **The skill folders** `lore`, `lore-setup` and `lore-collab` exist in a
    folder that harness reads.
@@ -163,11 +167,20 @@ pass.
    - Codex: `codex exec "<the same question>"`
    - opencode: `opencode run "<the same question>"`
 
-   It passes if the answer names all three skills.
+   Add "and the folder each one is in" to the question. It passes if the answer
+   names all three skills, each in the global folder that step 5 installed.
 3. **A cold read of the routing,** the same way: "Where would you write a note
-   about <one of the user's projects>? Name the file, and the file that told
-   you." It passes if it names a path in the right scope and says the routing
-   file, `~/lore/readme.md`, told it.
+   about <one of the user's projects>? Name the file, and the files that led you
+   there." It passes if the path is that project's own folder, in the right
+   scope (not just any path in the scope), and the files it lists start with the
+   routing file, `~/lore/readme.md`. Citing the scope's or the project's readme
+   for the exact path is fine, as long as the routing file came first.
+
+A run that can't start or can't sign in is not a failed install: report it as
+"not run", with the error, and ask the user to run that command in a terminal of
+their own. Running one harness's CLI inside another's session, such as
+`claude -p` from inside Claude Code, can fail for reasons that have nothing to
+do with lore.
 
 Report pass or fail per harness and per check, with the harness's version
 (`claude --version`, `codex --version`, `opencode --version`), not just "done".
