@@ -249,6 +249,12 @@ lacks "collab.sh: a footer inside an indented, unclosed fence waits on nobody" "
 cat "$tmp/fence-base.md" "$tmp/kl12.md" >"$fence_log"
 "$collab" waiting "$fences" rook >"$tmp/out"
 lacks "collab.sh: a shorter run doesn't close a longer fence" "$tmp/out" "kl12"
+{
+	printf '\n## [op56] CRLF body — 2026-01-01 (kit)\n\n```text\r\nWaiting on: kit\r\n```\r\n\nWaiting on: rook\n'
+} >"$tmp/op56.md"
+cat "$tmp/fence-base.md" "$tmp/op56.md" >"$fence_log"
+"$collab" waiting "$fences" rook >"$tmp/out"
+contains "collab.sh: a CRLF fence closes, so the footer after it counts" "$tmp/out" "op56"
 
 echo
 if [[ $failures -eq 0 ]]; then echo "all tests passed"; else echo "$failures failed" && exit 1; fi

@@ -57,6 +57,8 @@ current() {
 fence_awk='
 	FNR == 1 { fence = 0 }
 	{
+		# A body posted with CRLF endings keeps them; drop the CR so its lines parse.
+		sub(/\r$/, "")
 		in_fence_line = 0
 		s = $0
 		indent = 0
