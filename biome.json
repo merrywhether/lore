@@ -1,0 +1,14 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
+	"files": {
+		"includes": ["**", "!!node_modules"]
+	},
+	"markdown": {
+		"formatter": {
+			"proseWrap": "always"
+		},
+		"parser": {
+			"frontmatter": true
+		}
+	}
+}
