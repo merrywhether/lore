@@ -50,8 +50,10 @@ top-level `bin/`, `hooks/` or loose file.
 ### The readme contract
 
 `readme.md` starts with this frontmatter. The routing file is built from it.
-Every field is required, and each is one plain `key: value` line: no quotes, and
-no block scalars (`>` or `|`), because the scripts read values as plain text.
+Every field is required and needs a value, and each is one plain `key: value`
+line: no quotes, no block scalars (`>` or `|`) and no indented continuation
+lines, because the scripts read values as plain text. A `#` after a space starts
+a comment.
 
 ```yaml
 ---

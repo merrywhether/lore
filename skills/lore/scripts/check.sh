@@ -19,7 +19,7 @@ check_fields() {
 		why=$(frontmatter_problem "$repo/$file" "$key")
 		if [[ -n $why ]]; then
 			problem "$file $why"
-			if [[ $why == "has no frontmatter" ]]; then return 0; fi
+			if [[ $why == "has no frontmatter" || $why == *"no closing ---" ]]; then return 0; fi
 		fi
 	done
 }

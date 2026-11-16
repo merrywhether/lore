@@ -129,6 +129,33 @@ broken_root "a quoted value" 'home: readme.md frontmatter "scope" must be one pl
 contains "  and a block scalar" "$tmp/warnings" 'frontmatter "writes" must be one plain line'
 refuse "check.sh rejects quoted and folded values" "$check" "$broken/home"
 
+new_broken_root comment-only
+mkdir -p "$broken/home/projects" "$broken/home/skills"
+{
+	printf -- '---\nscope: The home scope.\nmachines: home machines\nwrites: # TODO\n---\n'
+	sections_only home
+} >"$broken/home/readme.md"
+broken_root "a comment-only value" 'home: readme.md frontmatter has no "writes"' home
+refuse "check.sh rejects a comment-only value" "$check" "$broken/home"
+
+new_broken_root continued
+mkdir -p "$broken/home/projects" "$broken/home/skills"
+{
+	printf -- '---\nscope: The home scope.\nmachines: home machines\nwrites: Home projects\n  except shared ones.\n---\n'
+	sections_only home
+} >"$broken/home/readme.md"
+broken_root "a value with a continuation line" 'home: readme.md frontmatter "writes" must be one plain line' home
+refuse "check.sh rejects a continuation line" "$check" "$broken/home"
+
+new_broken_root unclosed
+mkdir -p "$broken/home/projects" "$broken/home/skills"
+{
+	printf -- '---\nscope: The home scope.\nmachines: home machines\nwrites: Home projects.\n'
+	sections_only home
+} >"$broken/home/readme.md"
+broken_root "frontmatter without a closing ---" 'home: readme.md frontmatter has no closing ---' home
+refuse "check.sh rejects frontmatter without a closing ---" "$check" "$broken/home"
+
 new_broken_root no-readme
 mkdir -p "$broken/home/projects" "$broken/home/skills"
 broken_root "a scope folder without a readme" 'home: no readme.md' home
