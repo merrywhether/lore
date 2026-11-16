@@ -147,6 +147,15 @@ mkdir -p "$broken/home/projects" "$broken/home/skills"
 broken_root "a value with a continuation line" 'home: readme.md frontmatter "writes" must be one plain line' home
 refuse "check.sh rejects a continuation line" "$check" "$broken/home"
 
+new_broken_root continued-after-blank
+mkdir -p "$broken/home/projects" "$broken/home/skills"
+{
+	printf -- '---\nscope: The home scope.\nmachines: home machines\nwrites: Home projects\n\n  except shared ones.\n---\n'
+	sections_only home
+} >"$broken/home/readme.md"
+broken_root "a continuation line after a blank line" 'home: readme.md frontmatter "writes" must be one plain line' home
+refuse "check.sh rejects a continuation line after a blank line" "$check" "$broken/home"
+
 new_broken_root unclosed
 mkdir -p "$broken/home/projects" "$broken/home/skills"
 {

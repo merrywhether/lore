@@ -22,15 +22,16 @@ done
 fields=(scope machines writes)
 
 # Prints "<scope>: <problem>" for each reason <dir>'s readme.md isn't usable, or nothing.
+# <readme> is the copy to check, so the caller can check and render the same snapshot.
 scope_problems() {
-	local dir=$1 name key why
+	local dir=$1 readme=$2 name key why
 	name=$(basename "$dir")
 	if ! has_exact_file "$dir" readme.md; then
 		printf '%s: no readme.md (the name is lowercase)\n' "$name"
 		return
 	fi
 	for key in "${fields[@]}"; do
-		why=$(frontmatter_problem "$dir/readme.md" "$key")
+		why=$(frontmatter_problem "$readme" "$key")
 		if [[ -n $why ]]; then
 			printf '%s: readme.md %s\n' "$name" "$why"
 			if [[ $why == "has no frontmatter" || $why == *"no closing ---" ]]; then return; fi
@@ -55,11 +56,14 @@ and `agents.md`.
 
 HEAD
 	local found=no dir name readme why
+	readme=$(mktemp)
 	for dir in "$root"/*/; do
 		dir=${dir%/}
 		name=$(basename "$dir")
-		readme=$dir/readme.md
-		why=$(scope_problems "$dir")
+		# Check and render one snapshot, so an edit between the two can't slip through.
+		: >"$readme"
+		if has_exact_file "$dir" readme.md; then cp -- "$dir/readme.md" "$readme"; fi
+		why=$(scope_problems "$dir" "$readme")
 		if [[ -n $why ]]; then
 			printf '%s\n' "$why" >>"$problems_file"
 			continue
@@ -72,6 +76,7 @@ HEAD
 			printf '  - Read in every session: [%s/agents.md](%s/agents.md)\n' "$name" "$name"
 		fi
 	done
+	rm -f -- "$readme"
 	[[ $found == yes ]] || printf -- '- None yet.\n'
 	cat <<'TAIL'
 

@@ -27,12 +27,13 @@ frontmatter_closed() {
 	awk 'NR == 1 { if ($0 != "---") exit 1; next } $0 == "---" { found = 1; exit } END { exit !found }' "$1"
 }
 
-# True when the line after <key> in <file>'s frontmatter is indented, which YAML reads as a
-# continuation of the value.
+# True when the next non-blank line after <key> in <file>'s frontmatter is indented, which
+# YAML reads as a continuation of the value, even across blank lines.
 frontmatter_continues() {
 	awk -v key="$2" '
 		NR == 1 { next }
 		$0 == "---" { exit }
+		seen && /^[ \t]*$/ { next }
 		seen { if (/^[ \t]+[^ \t]/) found = 1; exit }
 		index($0, key ":") == 1 { seen = 1 }
 		END { exit !found }
