@@ -49,12 +49,37 @@ current() {
 	printf '%s\n' "${logs[${#logs[@]}-1]}"
 }
 
-# Shared by the parsers below: fenced code (``` or ~~~) is never read as log structure, so an
-# example section inside a fence is not a section.
+# Shared by the parsers below: fenced code is never read as log structure, so an example
+# section inside a fence is not a section. Fences follow CommonMark: an opener is three or
+# more backticks or tildes, indented up to three spaces, and only a run of the same character
+# at least as long, with nothing after it, closes it. A fence left open runs to the end of the
+# file, so the section it is in has no footer. (No regex intervals: mawk lacks them.)
 fence_awk='
 	FNR == 1 { fence = 0 }
-	/^(```|~~~)/ { fence = !fence; in_fence_line = 1 }
-	!/^(```|~~~)/ { in_fence_line = 0 }
+	{
+		# A body posted with CRLF endings keeps them; drop the CR so its lines parse.
+		sub(/\r$/, "")
+		in_fence_line = 0
+		s = $0
+		indent = 0
+		while (indent < 4 && substr(s, 1, 1) == " ") { s = substr(s, 2); indent++ }
+		c = substr(s, 1, 1)
+		run = 0
+		if (indent < 4 && (c == "`" || c == "~")) {
+			while (substr(s, run + 1, 1) == c) run++
+		}
+		if (run >= 3) {
+			rest = substr(s, run + 1)
+			if (!fence) {
+				# A backtick opener cannot have a backtick in its info string.
+				if (!(c == "`" && index(rest, "`"))) {
+					fence = 1; fence_char = c; fence_len = run; in_fence_line = 1
+				}
+			} else if (c == fence_char && run >= fence_len && rest ~ /^[ \t]*$/) {
+				fence = 0; in_fence_line = 1
+			}
+		}
+	}
 '
 
 # One line per section, across every phase: id<TAB>author<TAB>waiting<TAB>heading.
@@ -226,14 +251,6 @@ wait)
 		*) usage ;;
 		esac
 	done
-	# One waiter per collaboration and member: a second one would send a second wake-up.
-	key=$(printf '%s' "$(cd "$folder" && pwd)/$name" | cksum | cut -d' ' -f1)
-	lock="${TMPDIR:-/tmp}/lore-collab-wait-$key.pid"
-	if [[ -f $lock ]] && kill -0 "$(cat "$lock")" 2>/dev/null; then
-		die "a wait for $name on $folder is already running (pid $(cat "$lock"))"
-	fi
-	printf '%s\n' "$$" >"$lock"
-	trap 'rm -f "$lock"' EXIT
 	# The first scan runs at once, so sections that arrived before arming are found. "fired"
 	# holds ids already sent and still unacked, so --repeat never sends the same batch twice.
 	fired=" "

@@ -226,5 +226,35 @@ expect "collab.sh: wait returns at once when a section is waiting" \
 	"$collab" wait "$log" kit --interval 1 --then -- true
 refuse "collab.sh: wait reports a failing wake-up" "$collab" wait "$log" kit --interval 1 --then -- false
 
+# Fences follow CommonMark, so a footer inside any fence, however it opens, waits on nobody.
+fences="$tmp/collab/fences"
+"$collab" start "$fences" fences >/dev/null
+fence_log=$("$collab" current "$fences")
+{
+	printf '\n## [ij90] Indented opener — 2026-01-01 (kit)\n\n   ```text\nWaiting on: rook\n'
+} >"$tmp/ij90.md"
+{
+	printf '\n## [kl12] Longer opener — 2026-01-01 (kit)\n\n````markdown\n```\nWaiting on: rook\n'
+} >"$tmp/kl12.md"
+{
+	printf '\n## [mn34] Closed longer fence — 2026-01-01 (kit)\n\n````markdown\n```\nWaiting on: kit\n```\n````\n\nWaiting on: rook\n'
+} >"$tmp/mn34.md"
+cat "$tmp/mn34.md" >>"$fence_log"
+"$collab" waiting "$fences" rook >"$tmp/out"
+contains "collab.sh: a footer after a closed four-backtick fence counts" "$tmp/out" "mn34"
+cp "$fence_log" "$tmp/fence-base.md"
+cat "$tmp/fence-base.md" "$tmp/ij90.md" >"$fence_log"
+"$collab" waiting "$fences" rook >"$tmp/out"
+lacks "collab.sh: a footer inside an indented, unclosed fence waits on nobody" "$tmp/out" "ij90"
+cat "$tmp/fence-base.md" "$tmp/kl12.md" >"$fence_log"
+"$collab" waiting "$fences" rook >"$tmp/out"
+lacks "collab.sh: a shorter run doesn't close a longer fence" "$tmp/out" "kl12"
+{
+	printf '\n## [op56] CRLF body — 2026-01-01 (kit)\n\n```text\r\nWaiting on: kit\r\n```\r\n\nWaiting on: rook\n'
+} >"$tmp/op56.md"
+cat "$tmp/fence-base.md" "$tmp/op56.md" >"$fence_log"
+"$collab" waiting "$fences" rook >"$tmp/out"
+contains "collab.sh: a CRLF fence closes, so the footer after it counts" "$tmp/out" "op56"
+
 echo
 if [[ $failures -eq 0 ]]; then echo "all tests passed"; else echo "$failures failed" && exit 1; fi
