@@ -29,7 +29,9 @@ code repo's checkout.
 - **Every section ends with `Waiting on: <names>`** (comma-separated), or
   `nobody`, as its last line. A section without that footer waits on nobody, and
   so does a footer quoted inside a code fence: fenced text is never read as log
-  structure.
+  structure. Fences follow CommonMark (an opener may be indented up to three
+  spaces, and only a matching run at least as long closes it), and a fence left
+  open hides everything after it.
 - **Unread** means: sections by others whose ids you have not acked. Position in
   the file means nothing, because sessions write at the same time.
   `collab.sh unread` computes it.
@@ -39,16 +41,16 @@ code repo's checkout.
 Run them as `<this skill's folder>/scripts/collab.sh <command> <folder> …`. Pass
 section bodies on stdin (a heredoc), or `</dev/null` for none.
 
-| Command                                                                  | What it does                                                                                                                                                                                                           |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `start <folder> <topic>`                                                 | Create the folder and `01-<topic>.md`.                                                                                                                                                                                 |
-| `post <folder> <name> <topic> [--ack ids] [--waiting names] [--no-push]` | Append a section, commit, and push the lore repo. Prints the new id.                                                                                                                                                   |
-| `unread <folder> <name>`                                                 | List sections `<name>` hasn't acked: `id`, author, waiting on, heading.                                                                                                                                                |
-| `waiting <folder> <name>`                                                | The unread sections that wait on `<name>`.                                                                                                                                                                             |
-| `wait <folder> <name> [--interval <s>] [--then -- <command> [args]]`     | Block until a section waits on `<name>`, print it, run `<command>`, exit. Checks at once, then every few seconds; spends no tokens while it waits. Refuses to start if a wait for the same folder and name is running. |
-| `next <folder> <name> <topic>`                                           | Close this phase and start the next log. Members follow on their own: `unread` reads every phase.                                                                                                                      |
-| `close <folder> <name>`                                                  | End the collaboration.                                                                                                                                                                                                 |
-| `current <folder>`                                                       | Print the newest log's path.                                                                                                                                                                                           |
+| Command                                                                         | What it does                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `start <folder> <topic>`                                                        | Create the folder and `01-<topic>.md`.                                                                                                                                                                           |
+| `post <folder> <name> <topic> [--ack ids] [--waiting names] [--no-push]`        | Append a section, commit, and push the lore repo. Prints the new id.                                                                                                                                             |
+| `unread <folder> <name>`                                                        | List sections `<name>` hasn't acked: `id`, author, waiting on, heading.                                                                                                                                          |
+| `waiting <folder> <name>`                                                       | The unread sections that wait on `<name>`.                                                                                                                                                                       |
+| `wait <folder> <name> [--interval <s>] [--repeat] [--then -- <command> [args]]` | Block until a section waits on `<name>`, print it, run `<command>`, exit. Checks at once, then every few seconds; spends no tokens while it waits. With `--repeat`, keeps watching and fires once per new batch. |
+| `next <folder> <name> <topic>`                                                  | Close this phase and start the next log. Members follow on their own: `unread` reads every phase.                                                                                                                |
+| `close <folder> <name>`                                                         | End the collaboration.                                                                                                                                                                                           |
+| `current <folder>`                                                              | Print the newest log's path.                                                                                                                                                                                     |
 
 ## Start a collaboration ("lore-collab start")
 
@@ -138,14 +140,22 @@ posts, as for "lore-collab".
   the user to run it once in a terminal on this machine, or run it through a
   host launcher the user has approved. With `--repeat` it keeps watching and
   sends one prompt per new batch of sections, so the woken turn doesn't arm
-  anything. A prompt queued while the chat is closed waits until the chat is
-  opened again. "lore-collab manual" means asking the user to stop that terminal
-  command.
+  anything. In testing, a queued prompt started a new turn in an open, idle chat
+  within seconds. A prompt queued for a thread that isn't loaded is kept, and
+  runs when the thread is resumed. What the desktop app does when a closed chat
+  is reopened is untested. "lore-collab manual" means asking the user to stop
+  that terminal command.
 - **Anywhere else, or when no waiter can run:** stay manual; the user says
   "lore-collab".
-- **Keep one waiter per collaboration and member.** `wait` refuses a second one.
-  After a restart, check whether the waiter still runs, and arm it again if not;
-  the first scan finds anything that arrived meanwhile.
+- **Keep one waiter per collaboration and member.** Before arming one, check
+  that none is running: Claude Code lists its background commands, and the Codex
+  waiter is one terminal command. After a restart, arm it again if it's gone;
+  the first scan finds anything that arrived meanwhile. `wait` doesn't enforce
+  this: a second waiter only costs a turn, as below.
+- **A wake-up with nothing unread is a no-op.** A duplicate waiter, or one
+  restarted before the woken turn acked its batch, can send a wake-up for
+  sections you've already acked. `unread` leaves those out, so check it and stop
+  if it's empty.
 - **If the wake-up fails** (`--then` exits non-zero), `wait` says so and exits
   non-zero. Nothing is lost: the sections stay unread until a turn acks them.
 - A section waiting on the user doesn't stop the session from acting on other
