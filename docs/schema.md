@@ -30,14 +30,14 @@ gets `work`, never `home`).
 
 Every scope repo has the same top level, and nothing else:
 
-| Path                   | Holds                                                                                                                                                                                                               |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `readme.md`            | The repo's contract (below).                                                                                                                                                                                        |
-| `agents.md`            | Optional. How the user works with agents across this scope's projects: preferences, conventions, what they expect of code and writing. Typically only the scope cloned on every machine has one.                    |
-| `projects/<project>/`  | Plans, research, decisions and working notes, organized however the project needs. A project can cover one code repo, several or none. Its readme lists the code repos it covers, each linked to its upstream page. |
-| `skills/<skill>/`      | Skills that need this scope's private content. Generic skills belong in a public repo like this one.                                                                                                                |
-| `repos/<code-repo>/`   | Optional. Steering and context for contributing to a code repo that can't be checked into it, because it's private or the repo isn't yours to change. Plans go in a project, not here.                              |
-| `repos/<code-repo>.md` | Optional. The code repo's upstream page (below).                                                                                                                                                                    |
+| Path                   | Holds                                                                                                                                                                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `readme.md`            | The repo's contract (below).                                                                                                                                                                                                                           |
+| `agents.md`            | Optional. How the user works with agents across this scope's projects: preferences, conventions, what they expect of code and writing. Typically only the scope cloned on every machine has one.                                                       |
+| `projects/<project>/`  | Plans, research, decisions and working notes, organized however the project needs. A project can cover one code repo, several or none. Its readme lists the code repos it covers, each linked to its upstream page, and their extra checkouts (below). |
+| `skills/<skill>/`      | Skills that need this scope's private content. Generic skills belong in a public repo like this one.                                                                                                                                                   |
+| `repos/<code-repo>/`   | Optional. Steering and context for contributing to a code repo that can't be checked into it, because it's private or the repo isn't yours to change. Plans go in a project, not here.                                                                 |
+| `repos/<code-repo>.md` | Optional. The code repo's upstream page (below).                                                                                                                                                                                                       |
 
 Git's own files (`.gitignore`, a `.gitleaks.toml` allowlist) may sit beside
 these. A strict top level means an agent always knows where to look, and a stray
@@ -92,6 +92,23 @@ Take `upstream` from the checkout's fetch remote, never a remote name. If the
 `local` path is missing on this machine, offer to clone from `upstream`; don't
 guess the URL.
 
+### Checkouts
+
+A code repo can have several local checkouts: a preview build, a long-running
+branch, a second clone for an experiment. The upstream page's `local` is the
+main checkout. A project's readme lists every other checkout of its code repos,
+each with its path and one line on why it exists, for example
+"`~/Developer/widget-app-preview`: preview build of the next release". A
+checkout kept on only some machines says which.
+
+A checkout's folder name may not match the code repo's name, so identify the
+code repo by the checkout's fetch remote, which matches its upstream page's
+`upstream`.
+
+Clones a tool makes for its own runs, such as a worktree per agent session, are
+that tool's business. Lore doesn't list them; they can still get a generated
+copy (see Privacy).
+
 ## Plain markdown
 
 - Links are relative markdown links (`[setup](setup.md)`), never
@@ -105,6 +122,8 @@ guess the URL.
   for lore, where "every repo is private" is one check, and install no
   third-party apps there.
 - A repo like this one, holding only the convention and skills, can be public.
-- A code repo's checkout may hold a generated copy of its lore notes for tools
-  that can't read `~/lore`. Mark it generated, name the sync that writes it, and
-  edit lore, never the copy.
+- A code repo's checkout may hold a generated copy of lore for tools that can't
+  read `~/lore`. The copy may combine several lore folders, such as the repo's
+  steering from `repos/<code-repo>/` plus the part of a project that covers it.
+  Its marker says it's generated, names every source folder and the sync that
+  writes it. Edit those sources, never the copy.

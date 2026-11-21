@@ -21,6 +21,7 @@ itself; yours lives in your own private repos.
 | ------------------------------------------ | -------------------------------------------------------------------------------- |
 | [lore](skills/lore/SKILL.md)               | Read and write lore day to day, rebuild the routing file, check a scope repo.    |
 | [lore-setup](skills/lore-setup/SKILL.md)   | Set up lore on a machine, by interview.                                          |
+| [lore-sweep](skills/lore-sweep/SKILL.md)   | Move facts from harness memory into lore, after you approve a sorted list.       |
 | [lore-collab](skills/lore-collab/SKILL.md) | Coordinate several interactive agent sessions through a shared log kept in lore. |
 
 `lore-collab` is experimental: it leans on harness-specific features (Claude

@@ -16,9 +16,12 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
 2. Read the readme of the scope repo for the code repo you're in, and its
    `agents.md` if it has one. Then read what that scope keeps for this code
    repo: `repos/<code-repo>/` (steering for contributing to it), plus any
-   project under `projects/` whose readme lists this code repo.
-3. If a checkout has a folder marked as a generated copy of its lore notes,
-   never edit it: edit lore, then run the sync its marker names.
+   project under `projects/` whose readme lists this code repo. Find the code
+   repo by the checkout's fetch remote, matched against the upstream pages'
+   `upstream`, not by the folder name: a second checkout may be named
+   differently.
+3. If a checkout has a folder marked as a generated copy of lore, never edit it:
+   edit the lore folders its marker names, then run the sync it names.
 
 ## Writing ("update lore")
 

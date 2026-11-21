@@ -92,12 +92,15 @@ known folder names:
 
   Don't stop at known folder names: a search for `.llms/` alone misses an
   ignored `docs/`. And report every checkout you searched, including the ones
-  with nothing, so the user can spot a repo that should have had notes.
+  with nothing, so the user can spot a repo that should have had notes. Group
+  checkouts by fetch remote: two folders with the same remote are two checkouts
+  of one code repo.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
-- **Agent memory folders**, such as `~/.claude/projects/*/memory/`: list what
-  each holds, and propose which facts belong in lore. Leave the folders in
-  place.
+- **Agent memory folders**, such as `~/.claude/projects/*/memory/`: sort each
+  memory as the `lore-sweep` skill does, and add the ones that belong in lore to
+  the list. Leave the folders in place; after the switch, `lore-sweep` moves
+  them and keeps them small.
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
   `chatSessions/` under
@@ -121,6 +124,9 @@ For each checkout that has notes or plans, ask:
   the scope already has.
 - **What stays per repo?** Steering for contributing to the code repo that can't
   be checked in goes to `repos/<code-repo>/`.
+- **Several checkouts of one code repo?** Ask which is the main one (the
+  upstream page's `local`) and why each other one exists. The project readme
+  lists the others, each with its path and that reason.
 
 Every code repo that gets notes also gets its upstream page,
 `repos/<code-repo>.md`, and the project's readme lists the code repo with a link
@@ -159,8 +165,8 @@ answer by reading the files in the current folder, and a broken install would
 pass. For the same reason, pick a checkout with no project-local copy of these
 skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
 
-1. **The skill folders** `lore`, `lore-setup` and `lore-collab` exist in a
-   folder that harness reads.
+1. **The skill folders** `lore`, `lore-setup`, `lore-sweep` and `lore-collab`
+   exist in a folder that harness reads.
 2. **A cold read of the skills,** in a fresh non-interactive run:
    - Claude Code:
      `claude -p "Which skills do you have whose name starts with lore? Name them."`
@@ -168,7 +174,7 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    - opencode: `opencode run "<the same question>"`
 
    Add "and the folder each one is in" to the question. It passes if the answer
-   names all three skills, each in the global folder that step 5 installed.
+   names all four skills, each in the global folder that step 5 installed.
 3. **A cold read of the routing,** the same way: "Where would you write a note
    about <one of the user's projects>? Name the file, and the files that led you
    there." It passes if the path is that project's own folder, in the right
