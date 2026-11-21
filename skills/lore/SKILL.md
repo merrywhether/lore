@@ -23,9 +23,10 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
    generated copy of lore (the schema's "Generated copies"): never edit it. Edit
    its `sources` instead, after checking that each is in a scope repo the
    routing file lists for this checkout. Then run its `rebuild` command only if
-   it's a script in a scope repo's `skills/` whose arguments name those sources
-   and this checkout; otherwise show the user the command and ask. A
-   `GENERATED.md` without that field belongs to some other tool.
+   it's a script in a scope repo's `skills/` that reads only those sources and
+   writes only to the folder holding this marker. If either is unclear, show the
+   user the command and ask. A `GENERATED.md` without that field belongs to some
+   other tool.
 
 ## Writing ("update lore")
 

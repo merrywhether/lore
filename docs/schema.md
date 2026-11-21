@@ -144,6 +144,8 @@ these rules hold:
   never in `.gitignore`, so the repo itself never changes.
 - **Every file it writes is ignored and untracked,** checked before copying and
   again after. If a check fails, stop and tell the user.
+- **It reads only its `sources` and writes only inside its own folder,** the one
+  holding its marker.
 - **It deletes nothing it didn't create.** A file that was there before the
   copy, even one it overwrote, is the user's to deal with.
 - **It's marked** with a `GENERATED.md` at the copy's top that starts with this
