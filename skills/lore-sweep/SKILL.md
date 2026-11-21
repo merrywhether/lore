@@ -15,7 +15,8 @@ inbox, and sweep it on a regular cadence. The rules are in this repo's
 
 - Read `~/lore/readme.md` and the readme of each scope repo on this machine, so
   you know which scopes and projects exist.
-- List each memory file:
+- List each memory file. Note its checksum (`shasum`) when you read it, and sort
+  from that same read, so the checksum matches what you sorted:
   - **Claude Code:** `~/.claude/projects/*/memory/`, one folder per working
     directory, each with an index, `MEMORY.md`.
   - **Codex:** `~/.codex/memories_v2/` (the folder name changes between
@@ -76,18 +77,16 @@ Show one row per fact: its file, a one-line summary, and where it goes (scope
 and path, "stays" or "delete"). For each move, show the text that will land.
 Move nothing until the user approves the list; they may change any row.
 
-Note each listed file's checksum (`shasum`) as you show the list. The harness
-may write to memory while the user reads it.
-
 ## 4. Move
 
-1. Write each approved fact to its destination, following the `lore` skill's
+1. **Check each source file first.** The harness may have written to memory
+   while the user read the list. If a file's checksum changed since you read it,
+   move none of its facts and leave it alone; sort it again in the next sweep.
+2. Write each approved fact to its destination, following the `lore` skill's
    "Writing" and "Writing beside other agents": pull first, stage and commit
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
-2. Then clean up each memory file the list touched:
-   - **Check it first.** If its checksum changed since the list, leave it alone,
-     and sort it again in the next sweep.
+3. Then clean up each memory file whose facts moved:
    - **Remove only the approved facts.** Keep every fact that stays, word for
      word. Where the harness needs the cue, leave a one-line pointer to the lore
      path in place of a moved fact.
@@ -104,7 +103,7 @@ may write to memory while the user reads it.
        headless `codex exec`.)
      - **Other harnesses:** ask the user how their memory treats deletions
        before deleting anything.
-3. Report what moved where, the commits, what stayed, and any file skipped
+4. Report what moved where, the commits, what stayed, and any file skipped
    because it changed.
 
 ## Cadence

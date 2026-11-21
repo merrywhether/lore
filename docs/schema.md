@@ -139,15 +139,18 @@ A copy of lore inside a checkout is written by a script in a scope repo's
 `skills/`, which holds the exact commands and their tests. Whatever the script,
 these rules hold:
 
-- **Never checked in.** Ignore the copy in the checkout's local exclude file
-  (`git rev-parse --git-path info/exclude`; in a worktree `.git` is a file),
-  never in `.gitignore`, so the repo itself never changes.
+- **Never checked in.** The copy's first file is a `.gitignore` inside it that
+  holds only `*`. That ignores the whole folder, the `.gitignore` included, so
+  the repo's own files never change. A rule nearer the file wins in git, so it
+  also beats a `!` exception in a parent `.gitignore`, and it covers only this
+  worktree, unlike `info/exclude`, which all of a repo's worktrees share.
 - **Every file it writes is ignored and untracked,** checked before copying and
   again after. If a check fails, stop and tell the user.
 - **It reads only its `sources` and writes only inside its own folder,** the one
   holding its marker.
-- **It deletes nothing it didn't create.** A file that was there before the
-  copy, even one it overwrote, is the user's to deal with.
+- **It replaces and deletes only files it wrote.** It keeps a list of them (for
+  example in its marker). Any other file at a path it would write, ignored or
+  not, is the user's: stop and ask before replacing it.
 - **It's marked** with a `GENERATED.md` at the copy's top that starts with this
   frontmatter (the plain-line rule applies; separate several sources with
   commas):

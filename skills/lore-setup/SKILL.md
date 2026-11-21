@@ -99,10 +99,10 @@ known folder names:
   any folder that matches more than one group, and let them decide.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
-- **Agent memory folders**, such as `~/.claude/projects/*/memory/`: sort each
-  memory as the `lore-sweep` skill does, and add the ones that belong in lore to
-  the list. Leave the folders in place; after the switch, `lore-sweep` moves
-  them and keeps them small.
+- **Agent memory folders**, such as `~/.claude/projects/*/memory/`: list what
+  each holds, but keep them out of the copy below. One memory file can mix a
+  fact for lore with one that must stay, so once the rest is in place, run the
+  `lore-sweep` skill, which sorts and moves each fact on its own.
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
   `chatSessions/` under
@@ -168,7 +168,8 @@ pass. For the same reason, pick a checkout with no project-local copy of these
 skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
 
 1. **The skill folders** `lore`, `lore-setup`, `lore-sweep` and `lore-collab`
-   exist in a folder that harness reads.
+   exist in that harness's global skills folder (the README's Install table). If
+   any is missing, install it with the README's commands, then check again.
 2. **A cold read of the skills,** in a fresh non-interactive run:
    - Claude Code:
      `claude -p "Which skills do you have whose name starts with lore? Name them."`
@@ -176,7 +177,7 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    - opencode: `opencode run "<the same question>"`
 
    Add "and the folder each one is in" to the question. It passes if the answer
-   names all four skills, each in the global folder that step 5 installed.
+   names all four skills, each in that harness's global skills folder.
 3. **A cold read of the routing,** the same way: "Where would you write a note
    about <one of the user's projects>? Name the file, and the files that led you
    there." It passes if the path is that project's own folder, in the right
