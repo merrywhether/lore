@@ -81,6 +81,33 @@ contains "routing.sh lists its machines" "$tmp/routing.md" "  - Cloned on: work 
 expect "routing.sh --write writes a complete root" "$routing" --root "$root" --write
 contains "the written routing file lists the scope" "$root/readme.md" '- **`work/`**'
 
+# --- Schema versions --------------------------------------------------------------------
+
+current=$(sed -n 's/^current_schema=//p' "$check")
+contains "docs/schema.md names the schema version check.sh follows" "$schema" "This is **schema version $current**."
+expect "check.sh --schema prints it" test "$("$check" --schema)" = "$current"
+
+# with_schema <case> <value>: a copy of the good scope whose readme's schema line is <value>
+# (empty to drop the line).
+with_schema() {
+	local dir="$tmp/schema-$1"
+	cp -R "$work" "$dir"
+	if [[ -n $2 ]]; then
+		sed "s/^schema: .*/schema: $2/" "$work/readme.md" >"$dir/readme.md"
+	else
+		grep -v '^schema: ' "$work/readme.md" >"$dir/readme.md"
+	fi
+	"$check" "$dir" >"$tmp/out" 2>&1 && return 1 || return 0
+}
+for case in "behind:$((current - 1)):migrate it with the lore-setup skill" \
+	"ahead:$((current + 1)):newer than these skills" \
+	"not-a-number:one:must be a whole number" \
+	'missing::frontmatter has no "schema"'; do
+	IFS=: read -r name value message <<<"$case"
+	if with_schema "$name" "$value"; then pass "check.sh rejects a scope whose schema is $name"; else fail "check.sh rejects a scope whose schema is $name"; fi
+	contains "  and says why" "$tmp/out" "$message"
+done
+
 # --- Scopes routing.sh must refuse --------------------------------------------------------
 
 # broken_root <case> <expected warning> <name>: add one broken scope, <name>, to a copy of the

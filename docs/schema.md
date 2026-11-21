@@ -2,6 +2,11 @@
 
 The conventions every lore setup follows. The skills in this repo rely on them.
 
+This is **schema version 1**. The version goes up only when existing scope repos
+have to change. [CHANGELOG.md](../CHANGELOG.md) lists the releases, and
+[the `lore-setup` skill's migrations](../skills/lore-setup/migrations.md) the
+steps for each version.
+
 ## The folder
 
 - `~/lore/` is a plain folder, not a git repo.
@@ -60,8 +65,13 @@ a comment.
 scope: Everything for the widget-app employer.
 machines: work machines only
 writes: Work for the employer, its repos and its colleagues' public work.
+schema: 1 # the schema version this repo follows
 ---
 ```
+
+`schema` is the schema version the repo follows, a whole number.
+`skills/lore/scripts/check.sh` reports a repo that's behind these skills
+(migrate it with the `lore-setup` skill) or ahead of them (update the skills).
 
 Then a `# Lore: <scope>` title, a short paragraph on the scope, and these
 sections:

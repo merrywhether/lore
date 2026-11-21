@@ -38,7 +38,12 @@ All harnesses at once, with the `skills` CLI:
 npx skills add merrywhether/lore -g -a claude-code -a codex -a opencode
 ```
 
-Or copy or link each folder under `skills/` into the harness's skills folder:
+`-g` installs them for every project, in each harness's global skills folder. To
+pin a release, name its tag: `merrywhether/lore@v0.1.0`
+([CHANGELOG.md](CHANGELOG.md) lists them).
+
+If you edit the skills yourself, clone this repo instead and link each folder
+under `skills/` into the harness's skills folder, so your changes are live:
 
 | Harness     | Global skills folder                                              |
 | ----------- | ----------------------------------------------------------------- |
@@ -58,6 +63,19 @@ lore.
 If chezmoi manages your dotfiles, `lore-setup` follows
 [docs/chezmoi.md](docs/chezmoi.md) to clone the scope repos without putting
 their names in your dotfiles repo.
+
+## Update
+
+```bash
+npx skills check
+npx skills update -g
+```
+
+With a clone, `git pull` instead. Then read [CHANGELOG.md](CHANGELOG.md). If a
+release raised the schema version, your scope repos need migrating: ask your
+agent to "set up lore" again, and `lore-setup` finds each scope repo that's
+behind and walks you through its migration. The `lore` skill's `check.sh` also
+reports a scope repo that's behind.
 
 ## License
 
