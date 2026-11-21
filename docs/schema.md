@@ -143,10 +143,16 @@ isn't yours to change.
   a linked worktree `.git` is a file. All of a repo's worktrees share that
   exclude file.
 - **Check before every copy,** and stop if either check fails:
-  - `git check-ignore -q --no-index -- <copy>/GENERATED.md` succeeds, so the
-    folder is ignored;
+  - Every path the copy will write is ignored: pipe the full list, one path per
+    line, `GENERATED.md` included, into `git check-ignore --no-index --stdin`.
+    It prints only the ignored ones, so any path missing from its output is
+    exposed, for example by a `!` exception in a `.gitignore`.
   - `git ls-files -- <copy>` prints nothing, since ignoring doesn't stop git
     from tracking a file it already tracks.
+- **Check after every copy** that
+  `git status --porcelain --untracked-files=all -- <copy>` prints nothing. If it
+  lists a file, delete that file from the copy and fix the ignore rule before
+  copying again.
 - **Mark it** with a `GENERATED.md` at the copy's top that starts with this
   frontmatter (the plain-line rule applies; separate several sources with
   commas):

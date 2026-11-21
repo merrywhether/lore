@@ -22,7 +22,7 @@ inbox, and sweep it on a regular cadence. The rules are in this repo's
     versions). Sweep `extensions/ad_hoc/notes/`, where Codex saves requests to
     remember, forget or correct something. Leave `rollout_summaries/` (chat
     summaries, like transcripts) and `memory_summary.md` (Codex rebuilds it from
-    the notes) alone.
+    the notes) alone. Read Codex's memory, but never write to it (step 4).
   - **Other harnesses:** ask the user whether theirs keeps memory files, and
     where.
 - Read only memory files, never sign-in or key files or settings that hold
@@ -95,10 +95,13 @@ may write to memory while the user reads it.
      - **Claude Code:** delete a file left with nothing but its frontmatter.
        Otherwise fix its `description` to match what's left. Update its line in
        that folder's `MEMORY.md` the same way, or remove the line with the file.
-     - **Codex ad hoc notes:** never delete a note file; Codex's own rules say
-       so, and its summary picks up edits but may miss deletions. Replace a
-       moved fact with a pointer, and a fact marked "delete" with one line
-       saying it no longer holds, so the summary drops it.
+     - **Codex:** write nothing in its memory. Codex manages it, its own rules
+       say never to delete a note, and its summary may miss an edit made behind
+       its back. Instead, give the user one message to paste into a Codex chat,
+       which asks Codex to forget each moved or stale fact: for a moved fact, it
+       says where in lore the fact now lives; for a stale one, that it no longer
+       holds. Codex records those as its own notes. (Not tried yet with a
+       headless `codex exec`.)
      - **Other harnesses:** ask the user how their memory treats deletions
        before deleting anything.
 3. Report what moved where, the commits, what stayed, and any file skipped
