@@ -151,9 +151,11 @@ isn't yours to change.
     from tracking a file it already tracks.
 - **Check after every copy** that
   `git status --porcelain --untracked-files=all -- <copy>` prints nothing. If it
-  lists a file this copy just wrote, delete that file and fix the ignore rule
-  before copying again. If it lists any other file, which was there before the
-  copy, leave it in place and tell the user: it isn't the copy's to delete.
+  lists a file the copy created, at a path that didn't exist before (note which
+  of its paths existed during the check before copying), delete it and fix the
+  ignore rule before copying again. Leave any other listed file in place,
+  including one the copy overwrote or one whose earlier state you don't know.
+  Tell the user, and stop until they decide.
 - **Mark it** with a `GENERATED.md` at the copy's top that starts with this
   frontmatter (the plain-line rule applies; separate several sources with
   commas):
