@@ -21,7 +21,8 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
    `upstream`, not by the folder name: a second checkout may be named
    differently.
 3. If a checkout has a folder marked as a generated copy of lore, never edit it:
-   edit the lore folders its marker names, then run the sync it names.
+   edit lore (the marker says what the copy was built from), then run the sync
+   it names.
 
 ## Writing ("update lore")
 
@@ -31,8 +32,9 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
 2. **Pick the place** in that repo:
    - a project's plans, research, decisions and logs: `projects/<project>/`;
    - steering and context for contributing to one code repo that can't be
-     checked into it (it's private, or the repo isn't yours to change):
-     `repos/<code-repo>/`, with its upstream page `repos/<code-repo>.md`;
+     checked into it (it holds private context or opinions, or the repo isn't
+     yours to change): `repos/<code-repo>/`, with its upstream page
+     `repos/<code-repo>.md`;
    - how the user works with agents, across this scope's projects: `agents.md`;
    - a skill that needs this scope's private content: `skills/<skill>/`.
 

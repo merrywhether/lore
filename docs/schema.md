@@ -36,7 +36,7 @@ Every scope repo has the same top level, and nothing else:
 | `agents.md`            | Optional. How the user works with agents across this scope's projects: preferences, conventions, what they expect of code and writing. Typically only the scope cloned on every machine has one.                                                       |
 | `projects/<project>/`  | Plans, research, decisions and working notes, organized however the project needs. A project can cover one code repo, several or none. Its readme lists the code repos it covers, each linked to its upstream page, and their extra checkouts (below). |
 | `skills/<skill>/`      | Skills that need this scope's private content. Generic skills belong in a public repo like this one.                                                                                                                                                   |
-| `repos/<code-repo>/`   | Optional. Steering and context for contributing to a code repo that can't be checked into it, because it's private or the repo isn't yours to change. Plans go in a project, not here.                                                                 |
+| `repos/<code-repo>/`   | Optional. Steering and context for contributing to a code repo that can't be checked into it, because it holds private context or opinions, or the repo isn't yours to change. Plans go in a project, not here.                                        |
 | `repos/<code-repo>.md` | Optional. The code repo's upstream page (below).                                                                                                                                                                                                       |
 
 Git's own files (`.gitignore`, a `.gitleaks.toml` allowlist) may sit beside
@@ -118,12 +118,13 @@ copy (see Privacy).
 
 ## Privacy
 
-- Scope repos are always private. Keep them in an org of their own, used only
-  for lore, where "every repo is private" is one check, and install no
+- Scope repos are always private. Recommended: keep them in an org of their own,
+  used only for lore, where "every repo is private" is one check, and install no
   third-party apps there.
 - A repo like this one, holding only the convention and skills, can be public.
-- A code repo's checkout may hold a generated copy of lore for tools that can't
-  read `~/lore`. The copy may combine several lore folders, such as the repo's
-  steering from `repos/<code-repo>/` plus the part of a project that covers it.
-  Its marker says it's generated, names every source folder and the sync that
-  writes it. Edit those sources, never the copy.
+- Some tools can read only inside a checkout, such as an editor assistant
+  limited to the open workspace, or an agent in a sandbox or the cloud. For
+  them, a checkout may hold a generated copy of lore. Ignore it in the
+  checkout's `.git/info/exclude`, not its `.gitignore`, so it's never checked
+  in, even in a repo that isn't yours to change. Its marker says it's generated,
+  what it was built from and which sync writes it. Edit lore, never the copy.

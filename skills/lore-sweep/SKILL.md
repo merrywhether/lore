@@ -27,6 +27,13 @@ inbox, and sweep it on a regular cadence. The rules are in this repo's
 
 Put each one in exactly one of these:
 
+- **A correction:** a rule the agent needed because it kept getting something
+  wrong (Claude Code marks most of these `type: feedback`). These matter most,
+  so don't bury them in a project's notes: put each where agents read at the
+  start of every session. That's the every-machine scope's `agents.md` when it
+  holds everywhere; otherwise the steering in `repos/<code-repo>/`, or the
+  project's readme. Write it as the rule plus a line on why, so the next agent
+  can judge the edge cases.
 - **A scope's project or repo notes:** a fact about one project or code repo.
   Name the scope and the file, under `projects/<project>/` or
   `repos/<code-repo>/`.
