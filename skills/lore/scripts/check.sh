@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
-# Check a scope repo against the readme contract in docs/schema.md.
+# Check a scope repo against the readme contract in lore's docs/schema.md.
 set -euo pipefail
 
 # shellcheck source=frontmatter.sh
 source "$(dirname "${BASH_SOURCE[0]}")/frontmatter.sh"
 
-repo=${1:?usage: check.sh <scope repo>}
+# The schema version these skills follow. Bump it, with a migration in lore-setup's migrations.md, whenever
+# existing scope repos have to change.
+current_schema=1
+
+if [[ ${1:-} == --schema ]]; then
+	echo "$current_schema"
+	exit 0
+fi
+
+repo=${1:?usage: check.sh <scope repo> | check.sh --schema}
 repo=${repo%/}
 problems=0
 problem() { echo "$repo: $*"; problems=$((problems + 1)); }
@@ -25,7 +34,15 @@ check_fields() {
 }
 
 if has_exact_file "$repo" readme.md; then
-	check_fields readme.md scope machines writes
+	check_fields readme.md scope machines writes schema
+	schema=$(frontmatter_value "$repo/readme.md" schema 2>/dev/null || true)
+	if [[ -n $schema && ! $schema =~ ^[0-9]+$ ]]; then
+		problem "readme.md frontmatter \"schema\" must be a whole number, not \"$schema\""
+	elif [[ -n $schema ]] && ((schema < current_schema)); then
+		problem "readme.md follows schema $schema, and these skills follow schema $current_schema: migrate it with the lore-setup skill"
+	elif [[ -n $schema ]] && ((schema > current_schema)); then
+		problem "readme.md follows schema $schema, newer than these skills (schema $current_schema): update them with npx skills update -g"
+	fi
 	grep -q '^# Lore: ' "$repo/readme.md" || problem "readme.md has no '# Lore: <scope>' title"
 	for section in "Never put here" "Layout" "Status"; do
 		grep -qx "## $section" "$repo/readme.md" || problem "readme.md has no '## $section' section"
