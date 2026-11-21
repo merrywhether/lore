@@ -135,28 +135,18 @@ copy (see Privacy).
 
 ## Generated copies
 
-A copy of lore inside a checkout must never be checked in, even in a repo that
-isn't yours to change.
+A copy of lore inside a checkout is written by a script in a scope repo's
+`skills/`, which holds the exact commands and their tests. Whatever the script,
+these rules hold:
 
-- **Ignore it locally,** in the file `git rev-parse --git-path info/exclude`
-  prints, never in `.gitignore`. Don't write to `.git/info/exclude` directly: in
-  a linked worktree `.git` is a file. All of a repo's worktrees share that
-  exclude file.
-- **Check before every copy,** and stop if either check fails:
-  - Every path the copy will write is ignored: pipe the full list, one path per
-    line, `GENERATED.md` included, into `git check-ignore --no-index --stdin`.
-    It prints only the ignored ones, so any path missing from its output is
-    exposed, for example by a `!` exception in a `.gitignore`.
-  - `git ls-files -- <copy>` prints nothing, since ignoring doesn't stop git
-    from tracking a file it already tracks.
-- **Check after every copy** that
-  `git status --porcelain --untracked-files=all -- <copy>` prints nothing. If it
-  lists a file the copy created, at a path that didn't exist before (note which
-  of its paths existed during the check before copying), delete it and fix the
-  ignore rule before copying again. Leave any other listed file in place,
-  including one the copy overwrote or one whose earlier state you don't know.
-  Tell the user, and stop until they decide.
-- **Mark it** with a `GENERATED.md` at the copy's top that starts with this
+- **Never checked in.** Ignore the copy in the checkout's local exclude file
+  (`git rev-parse --git-path info/exclude`; in a worktree `.git` is a file),
+  never in `.gitignore`, so the repo itself never changes.
+- **Every file it writes is ignored and untracked,** checked before copying and
+  again after. If a check fails, stop and tell the user.
+- **It deletes nothing it didn't create.** A file that was there before the
+  copy, even one it overwrote, is the user's to deal with.
+- **It's marked** with a `GENERATED.md` at the copy's top that starts with this
   frontmatter (the plain-line rule applies; separate several sources with
   commas):
 
