@@ -93,9 +93,10 @@ known folder names:
   Don't stop at known folder names: a search for `notes/` alone misses an
   ignored `docs/`. And report every checkout you searched, including the ones
   with nothing, so the user can spot a repo that should have had notes. Group
-  checkouts by remote, across all of each one's remotes (`git remote -v`): two
-  folders sharing a remote URL are two checkouts of one code repo, even when
-  one's `origin` is a fork.
+  checkouts by the fetch URLs of all their remotes (the `(fetch)` lines of
+  `git remote -v`, never push URLs): two folders sharing a fetch URL are two
+  checkouts of one code repo, even when one's `origin` is a fork. Show the user
+  any folder that matches more than one group, and let them decide.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
 - **Agent memory folders**, such as `~/.claude/projects/*/memory/`: sort each
@@ -151,7 +152,7 @@ Only after the user OKs the whole list:
   push.
 - Leave the sources in place until the user switches over. Then offer to delete
   each one, or to replace it with a generated copy for tools that can't read
-  `~/lore` (see the schema's Privacy section).
+  `~/lore`, following the schema's "Generated copies".
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.

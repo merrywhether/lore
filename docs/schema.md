@@ -103,10 +103,14 @@ checkout kept on only some machines says which.
 
 To find which code repo a checkout belongs to, don't go by its folder name,
 which may differ. Match its path against the upstream pages' `local` and the
-checkouts the project readmes list. Failing that, match any of its remotes
-(`git remote -v`, not only `origin`) against an upstream page's `upstream`: in a
+checkouts the project readmes list. Failing that, match the fetch URL of each of
+its remotes, not only `origin`, against an upstream page's `upstream`: in a
 fork, `origin` is often the fork and the repo you contribute to is another
-remote. A checkout with only the fork's remote is found by its path, so list it.
+remote. Use fetch URLs only (the `(fetch)` lines of `git remote -v`): unrelated
+repos can share a push URL. Treat the SSH and HTTPS URLs of one repo as the
+same. If a checkout matches more than one upstream page, or its path and remotes
+disagree, ask the user. A checkout with only the fork's remote is found by its
+path, so list it.
 
 Clones a tool makes for its own runs, such as a worktree per agent session, are
 that tool's business. Lore doesn't list them; they can still get a generated
@@ -127,8 +131,33 @@ copy (see Privacy).
 - A repo like this one, holding only the convention and skills, can be public.
 - Some tools can read only inside a checkout, such as an editor assistant
   limited to the open workspace, or an agent in a sandbox or the cloud. For
-  them, a checkout may hold a generated copy of lore. Ignore it in the
-  checkout's `.git/info/exclude`, not its `.gitignore`, so it's never checked
-  in, even in a repo that isn't yours to change. Put a `GENERATED.md` at the
-  copy's top: it says the folder is generated, which lore folders it was built
-  from, and the command that rebuilds it. Edit lore, never the copy.
+  them, a checkout may hold a generated copy of lore (below).
+
+## Generated copies
+
+A copy of lore inside a checkout must never be checked in, even in a repo that
+isn't yours to change.
+
+- **Ignore it locally,** in the file `git rev-parse --git-path info/exclude`
+  prints, never in `.gitignore`. Don't write to `.git/info/exclude` directly: in
+  a linked worktree `.git` is a file. All of a repo's worktrees share that
+  exclude file.
+- **Check before every copy,** and stop if either check fails:
+  - `git check-ignore -q --no-index -- <copy>/GENERATED.md` succeeds, so the
+    folder is ignored;
+  - `git ls-files -- <copy>` prints nothing, since ignoring doesn't stop git
+    from tracking a file it already tracks.
+- **Mark it** with a `GENERATED.md` at the copy's top that starts with this
+  frontmatter (the plain-line rule applies; separate several sources with
+  commas):
+
+```yaml
+---
+generated: lore
+sources: ~/lore/work/repos/widget-app, ~/lore/work/projects/widget-app
+rebuild: ~/lore/work/skills/copies/sync.sh widget-app
+---
+```
+
+Other tools write files named `GENERATED.md` too. A folder is a copy of lore
+only if its marker says `generated: lore`. Edit its sources, never the copy.

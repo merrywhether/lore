@@ -17,11 +17,14 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
    `agents.md` if it has one. Then read what that scope keeps for this code
    repo: `repos/<code-repo>/` (steering for contributing to it), plus any
    project under `projects/` whose readme lists this code repo. Find the code
-   repo by the checkout's path, then by any of its remotes, not by its folder
-   name (the schema's "Checkouts").
-3. If a checkout has a folder with a `GENERATED.md`, it's a generated copy of
-   lore: never edit it. Edit the lore folders that file names, then run the
-   command it gives.
+   repo by the checkout's path, then by its remotes' fetch URLs, not by its
+   folder name; if the matches disagree, ask (the schema's "Checkouts").
+3. A folder whose `GENERATED.md` frontmatter says `generated: lore` is a
+   generated copy of lore (the schema's "Generated copies"): never edit it. Edit
+   its `sources` instead, after checking that each is in a scope repo the
+   routing file lists for this checkout. Then run its `rebuild` command only if
+   it's a script in a scope repo's `skills/`; otherwise show it to the user and
+   ask. A `GENERATED.md` without that field belongs to some other tool.
 
 ## Writing ("update lore")
 

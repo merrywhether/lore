@@ -28,9 +28,11 @@ inbox, and sweep it on a regular cadence. The rules are in this repo's
 - Read only memory files, never sign-in or key files or settings that hold
   tokens.
 
-## 2. Sort each memory
+## 2. Sort each fact
 
-Put each one in exactly one of these:
+A memory file can hold several facts with different homes, such as a preference
+beside a detail about this machine. Sort each fact, not each file. Put each fact
+in exactly one of these:
 
 - **A correction:** a rule the agent needed because it kept getting something
   wrong (Claude Code marks most of these `type: feedback`). These matter most,
@@ -51,6 +53,11 @@ Put each one in exactly one of these:
 
 While sorting:
 
+- **A "forget" note stays.** A harness may keep requests to forget something
+  (Codex's ad hoc notes do). Leave the note alone, so the harness acts on it. If
+  lore says the thing to be forgotten, list that lore passage too, and ask
+  whether to remove it.
+
 - **Unsure of the scope? Pick the narrower one.** Moving a fact toward a broader
   scope (a work project's convention into the every-machine `agents.md`) needs
   the removal pass the schema requires: strip what that scope mustn't see, and
@@ -65,9 +72,12 @@ While sorting:
 
 ## 3. Show the list, then wait
 
-Show one row per memory: the file, a one-line summary, and where it goes (scope
+Show one row per fact: its file, a one-line summary, and where it goes (scope
 and path, "stays" or "delete"). For each move, show the text that will land.
 Move nothing until the user approves the list; they may change any row.
+
+Note each listed file's checksum (`shasum`) as you show the list. The harness
+may write to memory while the user reads it.
 
 ## 4. Move
 
@@ -75,14 +85,24 @@ Move nothing until the user approves the list; they may change any row.
    "Writing" and "Writing beside other agents": pull first, stage and commit
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
-2. Then, in memory, delete each moved file, or cut it to a one-line pointer to
-   its lore path when the harness needs the cue. For a Codex note, always cut it
-   to a pointer: Codex's own rules say never to delete a note, and its summary
-   picks up an edit but may not notice a deletion. Delete the files marked
-   "delete".
-3. Keep the harness's index in step: remove or update the line for each file you
-   deleted or cut (for Claude Code, in that folder's `MEMORY.md`).
-4. Report what moved where, the commits, and what stayed.
+2. Then clean up each memory file the list touched:
+   - **Check it first.** If its checksum changed since the list, leave it alone,
+     and sort it again in the next sweep.
+   - **Remove only the approved facts.** Keep every fact that stays, word for
+     word. Where the harness needs the cue, leave a one-line pointer to the lore
+     path in place of a moved fact.
+   - **Then, by harness:**
+     - **Claude Code:** delete a file left with nothing but its frontmatter.
+       Otherwise fix its `description` to match what's left. Update its line in
+       that folder's `MEMORY.md` the same way, or remove the line with the file.
+     - **Codex ad hoc notes:** never delete a note file; Codex's own rules say
+       so, and its summary picks up edits but may miss deletions. Replace a
+       moved fact with a pointer, and a fact marked "delete" with one line
+       saying it no longer holds, so the summary drops it.
+     - **Other harnesses:** ask the user how their memory treats deletions
+       before deleting anything.
+3. Report what moved where, the commits, what stayed, and any file skipped
+   because it changed.
 
 ## Cadence
 
