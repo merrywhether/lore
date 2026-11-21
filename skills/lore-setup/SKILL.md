@@ -86,11 +86,11 @@ known folder names:
     | grep -Ev '(^|/)(node_modules|\.venv|vendor|dist|build|\.cache)/'
   ```
 
-  Typical finds: a `.llms/` or `.notes/` folder, an ignored `docs/` folder
+  Typical finds: a `notes/` or `.notes/` folder, an ignored `docs/` folder
   (often in a public repo, where plans can't be checked in), a loose `PLAN.md`.
   Checked-in docs belong to the code repo; leave them there.
 
-  Don't stop at known folder names: a search for `.llms/` alone misses an
+  Don't stop at known folder names: a search for `notes/` alone misses an
   ignored `docs/`. And report every checkout you searched, including the ones
   with nothing, so the user can spot a repo that should have had notes. Group
   checkouts by remote, across all of each one's remotes (`git remote -v`): two
