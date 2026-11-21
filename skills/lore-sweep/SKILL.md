@@ -87,7 +87,8 @@ Move nothing until the user approves the list; they may change any row.
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
 3. Then clean up each memory file with a fact that moved or was approved for
-   deletion:
+   deletion. Check its checksum again right before you edit it: if it changed
+   while you wrote to lore, leave it alone and report it.
    - **Remove only the approved facts.** Keep every fact that stays, word for
      word. Where the harness needs the cue, leave a one-line pointer to the lore
      path in place of a moved fact.
@@ -98,10 +99,10 @@ Move nothing until the user approves the list; they may change any row.
      - **Codex:** write nothing in its memory. Codex manages it, its own rules
        say never to delete a note, and its summary may miss an edit made behind
        its back. Instead, give the user one message to paste into a Codex chat,
-       which asks Codex to forget each moved or stale fact: for a moved fact, it
-       says where in lore the fact now lives; for a stale one, that it no longer
-       holds. Codex records those as its own notes. (Not tried yet with a
-       headless `codex exec`.)
+       which asks Codex to forget each moved fact and each approved deletion:
+       for a moved fact or one lore already has, it says where in lore the fact
+       lives; for a stale one, that it no longer holds. Codex records those as
+       its own notes. (Not tried yet with a headless `codex exec`.)
      - **Other harnesses:** ask the user how their memory treats deletions
        before deleting anything.
 4. Report what moved where, the commits, what stayed, and any file skipped

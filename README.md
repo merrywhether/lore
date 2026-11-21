@@ -35,7 +35,7 @@ Each skill is a folder in the portable Agent Skills format: a `SKILL.md` with
 All harnesses at once, with the `skills` CLI:
 
 ```bash
-npx skills add merrywhether/lore -a claude-code -a codex -a opencode
+npx skills add merrywhether/lore -g -a claude-code -a codex -a opencode
 ```
 
 Or copy or link each folder under `skills/` into the harness's skills folder:
