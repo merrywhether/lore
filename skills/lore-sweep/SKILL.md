@@ -18,6 +18,11 @@ inbox, and sweep it on a regular cadence. The rules are in this repo's
 - List each memory file:
   - **Claude Code:** `~/.claude/projects/*/memory/`, one folder per working
     directory, each with an index, `MEMORY.md`.
+  - **Codex:** `~/.codex/memories_v2/` (the folder name changes between
+    versions). Sweep `extensions/ad_hoc/notes/`, where Codex saves requests to
+    remember, forget or correct something. Leave `rollout_summaries/` (chat
+    summaries, like transcripts) and `memory_summary.md` (Codex rebuilds it from
+    the notes) alone.
   - **Other harnesses:** ask the user whether theirs keeps memory files, and
     where.
 - Read only memory files, never sign-in or key files or settings that hold
@@ -71,7 +76,9 @@ Move nothing until the user approves the list; they may change any row.
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
 2. Then, in memory, delete each moved file, or cut it to a one-line pointer to
-   its lore path when the harness needs the cue. Delete the files marked
+   its lore path when the harness needs the cue. For a Codex note, always cut it
+   to a pointer: Codex's own rules say never to delete a note, and its summary
+   picks up an edit but may not notice a deletion. Delete the files marked
    "delete".
 3. Keep the harness's index in step: remove or update the line for each file you
    deleted or cut (for Claude Code, in that folder's `MEMORY.md`).

@@ -93,8 +93,9 @@ known folder names:
   Don't stop at known folder names: a search for `.llms/` alone misses an
   ignored `docs/`. And report every checkout you searched, including the ones
   with nothing, so the user can spot a repo that should have had notes. Group
-  checkouts by fetch remote: two folders with the same remote are two checkouts
-  of one code repo.
+  checkouts by remote, across all of each one's remotes (`git remote -v`): two
+  folders sharing a remote URL are two checkouts of one code repo, even when
+  one's `origin` is a fork.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
 - **Agent memory folders**, such as `~/.claude/projects/*/memory/`: sort each

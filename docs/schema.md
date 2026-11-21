@@ -101,9 +101,12 @@ each with its path and one line on why it exists, for example
 "`~/Developer/widget-app-preview`: preview build of the next release". A
 checkout kept on only some machines says which.
 
-A checkout's folder name may not match the code repo's name, so identify the
-code repo by the checkout's fetch remote, which matches its upstream page's
-`upstream`.
+To find which code repo a checkout belongs to, don't go by its folder name,
+which may differ. Match its path against the upstream pages' `local` and the
+checkouts the project readmes list. Failing that, match any of its remotes
+(`git remote -v`, not only `origin`) against an upstream page's `upstream`: in a
+fork, `origin` is often the fork and the repo you contribute to is another
+remote. A checkout with only the fork's remote is found by its path, so list it.
 
 Clones a tool makes for its own runs, such as a worktree per agent session, are
 that tool's business. Lore doesn't list them; they can still get a generated
@@ -126,5 +129,6 @@ copy (see Privacy).
   limited to the open workspace, or an agent in a sandbox or the cloud. For
   them, a checkout may hold a generated copy of lore. Ignore it in the
   checkout's `.git/info/exclude`, not its `.gitignore`, so it's never checked
-  in, even in a repo that isn't yours to change. Its marker says it's generated,
-  what it was built from and which sync writes it. Edit lore, never the copy.
+  in, even in a repo that isn't yours to change. Put a `GENERATED.md` at the
+  copy's top: it says the folder is generated, which lore folders it was built
+  from, and the command that rebuilds it. Edit lore, never the copy.
