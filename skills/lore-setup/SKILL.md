@@ -102,7 +102,8 @@ known folder names:
 - **Agent memory folders**, such as `~/.claude/projects/*/memory/`: list what
   each holds, but keep them out of the copy below. One memory file can mix a
   fact for lore with one that must stay, so once the rest is in place, run the
-  `lore-sweep` skill, which sorts and moves each fact on its own.
+  `lore-sweep` skill, which sorts and moves each fact on its own. If it isn't
+  installed, install it first with the README's commands.
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
   `chatSessions/` under

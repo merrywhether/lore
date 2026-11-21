@@ -86,7 +86,8 @@ Move nothing until the user approves the list; they may change any row.
    "Writing" and "Writing beside other agents": pull first, stage and commit
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
-3. Then clean up each memory file whose facts moved:
+3. Then clean up each memory file with a fact that moved or was approved for
+   deletion:
    - **Remove only the approved facts.** Keep every fact that stays, word for
      word. Where the harness needs the cue, leave a one-line pointer to the lore
      path in place of a moved fact.

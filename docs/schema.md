@@ -139,6 +139,9 @@ A copy of lore inside a checkout is written by a script in a scope repo's
 `skills/`, which holds the exact commands and their tests. Whatever the script,
 these rules hold:
 
+- **Its folder is its own,** new or empty the first time it's written, so the
+  ignore rule below can't hide a file of the user's. If the folder holds
+  anything else, stop and ask.
 - **Never checked in.** The copy's first file is a `.gitignore` inside it that
   holds only `*`. That ignores the whole folder, the `.gitignore` included, so
   the repo's own files never change. A rule nearer the file wins in git, so it
