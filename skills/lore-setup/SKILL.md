@@ -86,18 +86,24 @@ known folder names:
     | grep -Ev '(^|/)(node_modules|\.venv|vendor|dist|build|\.cache)/'
   ```
 
-  Typical finds: a `.llms/` or `.notes/` folder, an ignored `docs/` folder
+  Typical finds: a `notes/` or `.notes/` folder, an ignored `docs/` folder
   (often in a public repo, where plans can't be checked in), a loose `PLAN.md`.
   Checked-in docs belong to the code repo; leave them there.
 
-  Don't stop at known folder names: a search for `.llms/` alone misses an
+  Don't stop at known folder names: a search for `notes/` alone misses an
   ignored `docs/`. And report every checkout you searched, including the ones
-  with nothing, so the user can spot a repo that should have had notes.
+  with nothing, so the user can spot a repo that should have had notes. Group
+  checkouts by the fetch URLs of all their remotes (the `(fetch)` lines of
+  `git remote -v`, never push URLs): two folders sharing a fetch URL are two
+  checkouts of one code repo, even when one's `origin` is a fork. Show the user
+  any folder that matches more than one group, and let them decide.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
 - **Agent memory folders**, such as `~/.claude/projects/*/memory/`: list what
-  each holds, and propose which facts belong in lore. Leave the folders in
-  place.
+  each holds, but keep them out of the copy below. One memory file can mix a
+  fact for lore with one that must stay, so once the rest is in place, run the
+  `lore-sweep` skill, which sorts and moves each fact on its own. If it isn't
+  installed, install it first with the README's commands.
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
   `chatSessions/` under
@@ -121,6 +127,9 @@ For each checkout that has notes or plans, ask:
   the scope already has.
 - **What stays per repo?** Steering for contributing to the code repo that can't
   be checked in goes to `repos/<code-repo>/`.
+- **Several checkouts of one code repo?** Ask which is the main one (the
+  upstream page's `local`) and why each other one exists. The project readme
+  lists the others, each with its path and that reason.
 
 Every code repo that gets notes also gets its upstream page,
 `repos/<code-repo>.md`, and the project's readme lists the code repo with a link
@@ -144,7 +153,7 @@ Only after the user OKs the whole list:
   push.
 - Leave the sources in place until the user switches over. Then offer to delete
   each one, or to replace it with a generated copy for tools that can't read
-  `~/lore` (see the schema's Privacy section).
+  `~/lore`, following the schema's "Generated copies".
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
@@ -159,8 +168,9 @@ answer by reading the files in the current folder, and a broken install would
 pass. For the same reason, pick a checkout with no project-local copy of these
 skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
 
-1. **The skill folders** `lore`, `lore-setup` and `lore-collab` exist in a
-   folder that harness reads.
+1. **The skill folders** `lore`, `lore-setup`, `lore-sweep` and `lore-collab`
+   exist in that harness's global skills folder (the README's Install table). If
+   any is missing, install it with the README's commands, then check again.
 2. **A cold read of the skills,** in a fresh non-interactive run:
    - Claude Code:
      `claude -p "Which skills do you have whose name starts with lore? Name them."`
@@ -168,7 +178,7 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    - opencode: `opencode run "<the same question>"`
 
    Add "and the folder each one is in" to the question. It passes if the answer
-   names all three skills, each in the global folder that step 5 installed.
+   names all four skills, each in that harness's global skills folder.
 3. **A cold read of the routing,** the same way: "Where would you write a note
    about <one of the user's projects>? Name the file, and the files that led you
    there." It passes if the path is that project's own folder, in the right

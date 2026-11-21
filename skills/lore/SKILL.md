@@ -16,9 +16,17 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
 2. Read the readme of the scope repo for the code repo you're in, and its
    `agents.md` if it has one. Then read what that scope keeps for this code
    repo: `repos/<code-repo>/` (steering for contributing to it), plus any
-   project under `projects/` whose readme lists this code repo.
-3. If a checkout has a folder marked as a generated copy of its lore notes,
-   never edit it: edit lore, then run the sync its marker names.
+   project under `projects/` whose readme lists this code repo. Find the code
+   repo by the checkout's path, then by its remotes' fetch URLs, not by its
+   folder name; if the matches disagree, ask (the schema's "Checkouts").
+3. A folder whose `GENERATED.md` frontmatter says `generated: lore` is a
+   generated copy of lore (the schema's "Generated copies"): never edit it. Edit
+   its `sources` instead, after checking that each is in a scope repo the
+   routing file lists for this checkout. Then run its `rebuild` command only if
+   it's a script in a scope repo's `skills/` that reads only those sources and
+   writes only to the folder holding this marker. If either is unclear, show the
+   user the command and ask. A `GENERATED.md` without that field belongs to some
+   other tool.
 
 ## Writing ("update lore")
 
@@ -28,8 +36,9 @@ repo's `docs/schema.md`; this skill is how to use them day to day.
 2. **Pick the place** in that repo:
    - a project's plans, research, decisions and logs: `projects/<project>/`;
    - steering and context for contributing to one code repo that can't be
-     checked into it (it's private, or the repo isn't yours to change):
-     `repos/<code-repo>/`, with its upstream page `repos/<code-repo>.md`;
+     checked into it (it holds private context or opinions, or the repo isn't
+     yours to change): `repos/<code-repo>/`, with its upstream page
+     `repos/<code-repo>.md`;
    - how the user works with agents, across this scope's projects: `agents.md`;
    - a skill that needs this scope's private content: `skills/<skill>/`.
 

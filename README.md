@@ -21,6 +21,7 @@ itself; yours lives in your own private repos.
 | ------------------------------------------ | -------------------------------------------------------------------------------- |
 | [lore](skills/lore/SKILL.md)               | Read and write lore day to day, rebuild the routing file, check a scope repo.    |
 | [lore-setup](skills/lore-setup/SKILL.md)   | Set up lore on a machine, by interview.                                          |
+| [lore-sweep](skills/lore-sweep/SKILL.md)   | Move facts from harness memory into lore, after you approve a sorted list.       |
 | [lore-collab](skills/lore-collab/SKILL.md) | Coordinate several interactive agent sessions through a shared log kept in lore. |
 
 `lore-collab` is experimental: it leans on harness-specific features (Claude
@@ -34,7 +35,7 @@ Each skill is a folder in the portable Agent Skills format: a `SKILL.md` with
 All harnesses at once, with the `skills` CLI:
 
 ```bash
-npx skills add merrywhether/lore -a claude-code -a codex -a opencode
+npx skills add merrywhether/lore -g -a claude-code -a codex -a opencode
 ```
 
 Or copy or link each folder under `skills/` into the harness's skills folder:
