@@ -30,9 +30,9 @@ already in lore.
   checkout can have several memories (sessions started in its subfolders), and a
   memory can cover no checkout at all. Find the memory for every other directory
   too, and say which ones you found.
-- List what each memory holds. If it's files, note each file's checksum
-  (`shasum`) when you read it, and sort from that same read, so the checksum
-  matches what you sorted.
+- List what each memory holds. Note each memory's state when you read it (a
+  file's checksum from `shasum`, or the version or text your harness shows), and
+  sort from that same read, so the state matches what you sorted.
 - Read only memory, never sign-in or key files or settings that hold tokens.
 
 ## 2. Sort each fact
@@ -46,8 +46,9 @@ fact in exactly one of these:
   agents read at the start of every session. That's the every-machine scope's
   `agents.md` when it holds everywhere; that scope's `agents.md` when it holds
   across one scope's projects; otherwise the steering in `repos/<code-repo>/`,
-  or the project's readme. Write it as the rule plus a line on why, so the next
-  agent can judge the edge cases.
+  or the readme of a project that lists its code repos, which sessions in those
+  repos read. Write it as the rule plus a line on why, so the next agent can
+  judge the edge cases.
 - **A scope's project or repo notes:** a fact about one project or code repo.
   Name the scope and the file, under `projects/<project>/` or
   `repos/<code-repo>/`.
@@ -98,7 +99,7 @@ next round, and list any of their facts whose text changed for approval again.
 ## 4. Move
 
 1. **Check each source first.** Your memory may have changed while the user read
-   the list. If a file's checksum changed since you read it, move none of its
+   the list. If a memory's state changed since you read it, move none of its
    facts and leave it alone; sort it again in the next sweep.
 2. Write each approved fact to its destination, following the `lore` skill's
    "Writing" and "Writing beside other agents": pull first, stage and commit
@@ -107,7 +108,7 @@ next round, and list any of their facts whose text changed for approval again.
 3. Then remove from memory each fact that moved or was approved for deletion,
    the way your harness expects memory to change: edit or delete its files and
    keep its index in step, or record a request to forget, whichever your memory
-   uses. Recheck a file's checksum right before you change it; if it changed
+   uses. Recheck a memory's state right before you change it; if it changed
    while you wrote to lore, leave it and report it.
    - **Remove only the approved facts.** Keep every fact that stays, word for
      word. Where you'd still want the cue, leave a one-line pointer to the lore
