@@ -6,6 +6,14 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
+## Unreleased
+
+- `lore`: rebuild the routing file with `routing.sh --write` after cloning or
+  removing a scope, or changing a scope readme's frontmatter.
+- `lore-setup` and `chezmoi.md` no longer look for a dotfiles template that
+  writes the routing file, or offer to retire one: nothing tells anyone to make
+  one, and `routing.sh` writes it.
+
 ## 0.1.3 (schema 1)
 
 - `lore-setup` starts by asking the user to pause other agent sessions on the

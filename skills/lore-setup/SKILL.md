@@ -22,8 +22,6 @@ found:
 - Does `~/lore/` exist? Which scope repos are in it, and does each pass the
   `lore` skill's `scripts/check.sh`? Which schema version does each follow (the
   `schema` field in its readme)?
-- Who writes `~/lore/readme.md`? Look for a dotfiles template that produces it
-  (for chezmoi: `chezmoi source-path ~/lore/readme.md`).
 - Which harnesses are installed, and does each one's global instructions already
   point at `~/lore/readme.md`?
 - Does a dotfiles manager own those instruction files? With chezmoi,
@@ -62,9 +60,7 @@ skills, stop and ask the user to update the skills (lore's README,
 
 ## 4. Build the routing file
 
-Run the `lore` skill's `scripts/routing.sh --write`. If a dotfiles template
-writes `~/lore/readme.md` today, offer to retire it, so the routing file has one
-writer.
+Run the `lore` skill's `scripts/routing.sh --write`.
 
 ## 5. Point each harness at lore
 
