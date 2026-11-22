@@ -194,8 +194,10 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    about <one of the user's projects>? Name the file, and the files that led you
    there." It passes if the path is that project's own folder, in the right
    scope (not just any path in the scope), and the files it lists start with the
-   routing file, `~/lore/readme.md`. Citing the scope's or the project's readme
-   for the exact path is fine, as long as the routing file came first.
+   routing file, `~/lore/readme.md`. The harness's own global instructions may
+   come before it, since step 5 points them at the routing file. Citing the
+   scope's or the project's readme for the exact path is fine, as long as the
+   routing file came before them.
 
 A run that can't start or can't sign in is not a failed install: report it as
 "not run", with the error, and ask the user to run that command in a terminal of

@@ -6,6 +6,13 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
+## Unreleased
+
+- `lore-setup` step 7: the routing check also passes when the harness's own
+  global instructions, which step 5 points at the routing file, come first.
+- README: Claude Code and Codex are verified with 0.1.1, and the install command
+  drops `-a opencode`, which `-a codex` already covers.
+
 ## 0.1.1 (schema 1)
 
 - `lore-sweep` sweeps only the memory of the harness it runs in, which knows
