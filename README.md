@@ -56,8 +56,7 @@ The CLI keeps one copy in `~/.agents/skills/`, which Codex and opencode both
 read, and links each skill into `~/.claude/skills/` for Claude Code, so
 `-a codex` covers opencode too. `lore-setup` ends by checking that each harness
 finds the skills and the routing file. Verified so far, with v0.1.1 on
-2026-11-21: Claude Code 2.1.325 and Codex 0.169.0. opencode hasn't been checked;
-its paths come from its docs.
+2026-11-21: Claude Code 2.1.325 and Codex 0.169.0.
 
 Then ask your agent to "set up lore" and the `lore-setup` skill takes it from
 there: it creates or clones the scope repos, builds the routing file, points
