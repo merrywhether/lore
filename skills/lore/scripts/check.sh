@@ -34,7 +34,13 @@ check_fields() {
 }
 
 if has_exact_file "$repo" readme.md; then
-	check_fields readme.md scope machines writes schema
+	check_fields readme.md scope machines writes
+	why=$(frontmatter_problem "$repo/readme.md" schema)
+	if [[ $why == *'no "schema"' ]]; then
+		problem "readme.md has no \"schema\" in its frontmatter: it was set up before versioning, so migrate it with the lore-setup skill (schema 1)"
+	elif [[ -n $why && $why != "has no frontmatter" && $why != *"no closing ---" ]]; then
+		problem "readme.md $why"
+	fi
 	schema=$(frontmatter_value "$repo/readme.md" schema 2>/dev/null || true)
 	# A plain decimal with no leading zero and at most 9 digits, so bash compares it safely.
 	if [[ -n $schema && ! $schema =~ ^(0|[1-9][0-9]{0,8})$ ]]; then

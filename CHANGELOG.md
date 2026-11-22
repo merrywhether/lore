@@ -6,6 +6,16 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
+## 0.1.1 (schema 1)
+
+- `lore-sweep` sweeps only the memory of the harness it runs in, which knows
+  where that memory lives and how to change it; run it in each harness. A
+  correction or convention that holds across one scope's projects goes to that
+  scope's `agents.md`; links between memories become relative links or plain
+  words; a large first sweep runs in rounds.
+- `check.sh`: a readme with no `schema` says to migrate it with `lore-setup`.
+- No migration.
+
 ## 0.1.0 (schema 1)
 
 The first tagged release.

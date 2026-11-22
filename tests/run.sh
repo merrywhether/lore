@@ -104,7 +104,7 @@ for case in "behind:$((current - 1)):migrate it with the lore-setup skill" \
 	"not-a-number:one:must be a whole number" \
 	"leading-zero:08:must be a whole number" \
 	"too-long:18446744073709551617:must be a whole number" \
-	'missing::frontmatter has no "schema"'; do
+	'missing::set up before versioning, so migrate it with the lore-setup skill'; do
 	IFS=: read -r name value message <<<"$case"
 	if with_schema "$name" "$value"; then pass "check.sh rejects a scope whose schema is $name"; else fail "check.sh rejects a scope whose schema is $name"; fi
 	contains "  and says why" "$tmp/out" "$message"

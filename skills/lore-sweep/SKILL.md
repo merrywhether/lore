@@ -1,64 +1,70 @@
 ---
 name: lore-sweep
-description: Sweep a harness's memory files (such as Claude Code's ~/.claude/projects/*/memory/) into the user's lore (~/lore), moving nothing until the user approves a sorted list. Use when the user says "sweep memory", "sweep lore", "move memory into lore", or when a scheduled sweep comes due.
+description: Sweep the memory of the harness you're running in into the user's lore (~/lore), moving nothing until the user approves a sorted list. Use when the user says "sweep memory", "sweep lore", "move memory into lore", or when a scheduled sweep comes due.
 ---
 
 # lore-sweep
 
 Harness memory keeps filling with facts that belong in lore, even when the
-steering points at lore. Pointing a memory folder into a scope repo doesn't
-work, because one memory folder mixes scopes. So treat memory as a short-lived
-inbox, and sweep it on a regular cadence. The rules are in lore's
+steering points at lore. Pointing memory into a scope repo doesn't work, because
+one harness's memory mixes scopes. So treat memory as a short-lived inbox, and
+sweep it on a regular cadence. The rules are in lore's
 [schema](../lore/schema.md); every write follows the `lore` skill.
+
+**Sweep only the memory of the harness you're running in.** You know where it
+lives, what format it's in and how changes to it should be made; another
+harness's memory you'd have to guess at. To sweep several harnesses, run the
+sweep in each one. A fact the first sweep moved is one the next sweep finds
+already in lore.
 
 ## 1. List the memory
 
 - Read `~/lore/readme.md` and the readme of each scope repo on this machine, so
   you know which scopes and projects exist.
-- List each memory file. Note its checksum (`shasum`) when you read it, and sort
-  from that same read, so the checksum matches what you sorted:
-  - **Claude Code:** `~/.claude/projects/*/memory/`, one folder per working
-    directory, each with an index, `MEMORY.md`.
-  - **Codex:** `~/.codex/memories_v2/` (the folder name changes between
-    versions). Sweep `extensions/ad_hoc/notes/`, where Codex saves requests to
-    remember, forget or correct something. Leave `rollout_summaries/` (chat
-    summaries, like transcripts) and `memory_summary.md` (Codex rebuilds it from
-    the notes) alone. Read Codex's memory, but never write to it (step 4).
-  - **Other harnesses:** ask the user whether theirs keeps memory files, and
-    where.
-- Read only memory files, never sign-in or key files or settings that hold
-  tokens.
+- If your harness gives you no known way to list its memory, or to change one
+  fact in it, say what's missing and leave that memory alone. Never guess at its
+  files or database.
+- Find all of your memory first. A harness may keep a separate memory for each
+  directory a session starts in, and tell you only where the current directory's
+  memory lives. That's about where sessions start, not about git checkouts: one
+  checkout can have several memories (sessions started in its subfolders), and a
+  memory can cover no checkout at all. Find the memory for every other directory
+  too, and say which ones you found.
+- List what each memory holds. Note each memory's state when you read it (a
+  file's checksum from `shasum`, or the version or text your harness shows), and
+  sort from that same read, so the state matches what you sorted.
+- Read only memory, never sign-in or key files or settings that hold tokens.
 
 ## 2. Sort each fact
 
-A memory file can hold several facts with different homes, such as a preference
-beside a detail about this machine. Sort each fact, not each file. Put each fact
-in exactly one of these:
+One memory can hold several facts with different homes, such as a preference
+beside a detail about this machine. Sort each fact, not each memory. Put each
+fact in exactly one of these:
 
-- **A correction:** a rule the agent needed because it kept getting something
-  wrong (Claude Code marks most of these `type: feedback`). These matter most,
-  so don't bury them in a project's notes: put each where agents read at the
-  start of every session. That's the every-machine scope's `agents.md` when it
-  holds everywhere; otherwise the steering in `repos/<code-repo>/`, or the
-  project's readme. Write it as the rule plus a line on why, so the next agent
-  can judge the edge cases.
+- **A correction:** a rule you needed because you kept getting something wrong.
+  These matter most, so don't bury them in a project's notes: put each where
+  agents read at the start of every session. That's the every-machine scope's
+  `agents.md` when it holds everywhere; that scope's `agents.md` when it holds
+  across one scope's projects; otherwise the steering in `repos/<code-repo>/`,
+  or the readme of a project that lists its code repos, which sessions in those
+  repos read. Write it as the rule plus a line on why, so the next agent can
+  judge the edge cases.
 - **A scope's project or repo notes:** a fact about one project or code repo.
   Name the scope and the file, under `projects/<project>/` or
   `repos/<code-repo>/`.
-- **`agents.md` in the scope cloned on every machine:** a preference or
-  convention true in every context. Without such a scope, the narrowest scope it
-  fits.
+- **A preference or convention:** one true in every context goes to `agents.md`
+  in the scope cloned on every machine (without such a scope, the narrowest one
+  it fits); one true across one scope's projects goes to that scope's
+  `agents.md`.
 - **Stays in memory:** facts about this machine (which tool or connector works
   here, local quirks), and memories that only point at lore paths.
 - **Delete:** stale, superseded, or already said in lore.
 
 While sorting:
 
-- **A "forget" note stays.** A harness may keep requests to forget something
-  (Codex's ad hoc notes do). Leave the note alone, so the harness acts on it. If
-  lore says the thing to be forgotten, list that lore passage too, and ask
+- **A request to forget something stays.** Leave it, so your memory acts on it.
+  If lore says the thing to be forgotten, list that lore passage too, and ask
   whether to remove it.
-
 - **Unsure of the scope? Pick the narrower one.** Moving a fact toward a broader
   scope (a work project's convention into the every-machine `agents.md`) needs
   the removal pass the schema requires: strip what that scope mustn't see, and
@@ -70,42 +76,44 @@ While sorting:
   may be out of date: check it against the current state before moving it.
 - **If lore already says something different,** don't overwrite either side:
   list both, and ask which wins.
+- **Rewrite links.** Lore uses relative markdown links only. A memory's link to
+  another memory, such as a `[[name]]` wikilink, becomes a relative link only
+  where its target is an approved move into the same scope repo, and that move
+  lands too (step 4 may skip one whose source changed). Otherwise drop the link
+  and keep the words: a link into another scope would show its path, and break
+  on machines without that scope.
 
 ## 3. Show the list, then wait
 
-Show one row per fact: its file, a one-line summary, and where it goes (scope
-and path, "stays" or "delete"). For each move, show the text that will land.
-Move nothing until the user approves the list; they may change any row.
+Show one row per fact: where it is in memory, a one-line summary, and where it
+goes (scope and path, "stays" or "delete"). For each move, show the text that
+will land. Move nothing until the user approves the list; they may change any
+row.
+
+A first sweep can be large (a hundred memories across a dozen projects). Then
+work in rounds: group the rows by destination scope and project, show about 20
+rows per round, and move each approved round (step 4) before listing the next.
+Moving a round changes the memories it touched, so read those again before the
+next round, and list any of their facts whose text changed for approval again.
 
 ## 4. Move
 
-1. **Check each source file first.** The harness may have written to memory
-   while the user read the list. If a file's checksum changed since you read it,
-   move none of its facts and leave it alone; sort it again in the next sweep.
+1. **Check each source first.** Your memory may have changed while the user read
+   the list. If a memory's state changed since you read it, move none of its
+   facts and leave it alone; sort it again in the next sweep.
 2. Write each approved fact to its destination, following the `lore` skill's
    "Writing" and "Writing beside other agents": pull first, stage and commit
    explicit paths, push right after. One commit per scope repo for the sweep is
    fine.
-3. Then clean up each memory file with a fact that moved or was approved for
-   deletion. Check its checksum again right before you edit it: if it changed
-   while you wrote to lore, leave it alone and report it.
+3. Then remove from memory each fact that moved or was approved for deletion,
+   the way your harness expects memory to change: edit or delete its files and
+   keep its index in step, or record a request to forget, whichever your memory
+   uses. Recheck a memory's state right before you change it; if it changed
+   while you wrote to lore, leave it and report it.
    - **Remove only the approved facts.** Keep every fact that stays, word for
-     word. Where the harness needs the cue, leave a one-line pointer to the lore
+     word. Where you'd still want the cue, leave a one-line pointer to the lore
      path in place of a moved fact.
-   - **Then, by harness:**
-     - **Claude Code:** delete a file left with nothing but its frontmatter.
-       Otherwise fix its `description` to match what's left. Update its line in
-       that folder's `MEMORY.md` the same way, or remove the line with the file.
-     - **Codex:** write nothing in its memory. Codex manages it, its own rules
-       say never to delete a note, and its summary may miss an edit made behind
-       its back. Instead, give the user one message to paste into a Codex chat,
-       which asks Codex to forget each moved fact and each approved deletion:
-       for a moved fact or one lore already has, it says where in lore the fact
-       lives; for a stale one, that it no longer holds. Codex records those as
-       its own notes. (Not tried yet with a headless `codex exec`.)
-     - **Other harnesses:** ask the user how their memory treats deletions
-       before deleting anything.
-4. Report what moved where, the commits, what stayed, and any file skipped
+4. Report what moved where, the commits, what stayed, and anything skipped
    because it changed.
 
 ## Cadence
@@ -113,7 +121,8 @@ Move nothing until the user approves the list; they may change any row.
 The user picks it: weekly, say, or as part of a regular review. Step 3 needs the
 user, so run the sweep where they can answer:
 
-- **By hand:** ask the agent to "sweep memory".
+- **By hand:** ask the agent to "sweep memory", in each harness that keeps
+  memory.
 - **On a schedule:** a recurring task in a harness that runs on this machine and
   lets the user answer, such as a scheduled task in the Claude desktop app's
   Code tab. A cloud agent can't see this machine's memory. A headless run (cron
