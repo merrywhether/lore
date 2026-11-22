@@ -7,8 +7,7 @@ description: Read and write the user's private lore (~/lore), the per-scope git 
 
 Lore is the user's private knowledge in `~/lore/`: a routing file,
 `~/lore/readme.md`, and one private git repo per scope. The rules are in lore's
-[schema](https://github.com/merrywhether/lore/blob/main/docs/schema.md); this
-skill is how to use them day to day.
+[schema](schema.md); this skill is how to use them day to day.
 
 ## At the start of work
 

@@ -8,8 +8,8 @@ description: Set up lore (the user's private per-scope knowledge repos under ~/l
 An interview that sets up `~/lore` on this machine and moves the machine's
 existing agent notes and plans into it. Ask one question at a time, and change
 nothing until each answer is in. The conventions are in lore's
-[schema](https://github.com/merrywhether/lore/blob/main/docs/schema.md); this
-skill needs nothing from any earlier setup guide.
+[schema](../lore/schema.md); this skill needs nothing from any earlier setup
+guide.
 
 ## 1. See what's already here
 
@@ -54,8 +54,7 @@ before going on.
 ## 3. Clone
 
 - **chezmoi:** if it manages this machine's dotfiles, follow
-  [lore's chezmoi notes](https://github.com/merrywhether/lore/blob/main/docs/chezmoi.md).
-  It keeps the scope list as machine-local data.
+  [chezmoi.md](chezmoi.md). It keeps the scope list as machine-local data.
 - **Otherwise:** clone each scope with `git` into `~/lore/<scope>/`.
 - Check each repo with the `lore` skill's `scripts/check.sh`.
 

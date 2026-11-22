@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Run the skill scripts against fixtures. The scope repo fixture is built from the examples in
-# docs/schema.md, so the schema and the scripts can't drift apart.
+# skills/lore/schema.md, so the schema and the scripts can't drift apart.
 set -euo pipefail
 
 here=$(cd "$(dirname "$0")/.." && pwd)
 check="$here/skills/lore/scripts/check.sh"
 routing="$here/skills/lore/scripts/routing.sh"
 collab="$here/skills/lore-collab/scripts/collab.sh"
-schema="$here/docs/schema.md"
+schema="$here/skills/lore/schema.md"
 
 tmp=$(mktemp -d)
 trap '[[ -n $tmp && -d $tmp ]] && rm -rf -- "$tmp"' EXIT
@@ -84,7 +84,7 @@ contains "the written routing file lists the scope" "$root/readme.md" '- **`work
 # --- Schema versions --------------------------------------------------------------------
 
 current=$(sed -n 's/^current_schema=//p' "$check")
-contains "docs/schema.md names the schema version check.sh follows" "$schema" "This is **schema version $current**."
+contains "schema.md names the schema version check.sh follows" "$schema" "This is **schema version $current**."
 expect "check.sh --schema prints it" test "$("$check" --schema)" = "$current"
 
 # with_schema <case> <value>: a copy of the good scope whose readme's schema line is <value>

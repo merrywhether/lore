@@ -1,11 +1,14 @@
 # The lore schema
 
-The conventions every lore setup follows. The skills in this repo rely on them.
+The conventions every lore setup follows. It ships inside the `lore` skill, so
+every installed copy of the skills has the schema they were written for.
 
 This is **schema version 1**. The version goes up only when existing scope repos
-have to change. [CHANGELOG.md](../CHANGELOG.md) lists the releases, and
-[the `lore-setup` skill's migrations](../skills/lore-setup/migrations.md) the
-steps for each version.
+have to change.
+[The changelog](https://github.com/merrywhether/lore/blob/main/CHANGELOG.md)
+lists the releases, and
+[the `lore-setup` skill's migrations](../lore-setup/migrations.md) the steps for
+each version.
 
 ## The folder
 

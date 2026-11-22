@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check a scope repo against the readme contract in lore's docs/schema.md.
+# Check a scope repo against the readme contract in the lore skill's schema.md.
 set -euo pipefail
 
 # shellcheck source=frontmatter.sh

@@ -9,7 +9,8 @@ itself; yours lives in your own private repos.
   private git repo per scope (`~/lore/global/`, `~/lore/work/`, …).
 - **Agents read `~/lore/readme.md` first.** It says which scope repos this
   machine has and where writes go.
-- **The rules** are in [docs/schema.md](docs/schema.md).
+- **The rules** are in [skills/lore/schema.md](skills/lore/schema.md), which
+  installs with the skills.
 - **Keep the scope repos in an org of their own**, used only for lore: every
   repo private, no GitHub apps or other third-party integrations installed. Then
   "nothing here is public, and no service reads it" is one check, and a mistake
@@ -61,8 +62,8 @@ each harness at it, and gathers the notes and plans already on the machine into
 lore.
 
 If chezmoi manages your dotfiles, `lore-setup` follows
-[docs/chezmoi.md](docs/chezmoi.md) to clone the scope repos without putting
-their names in your dotfiles repo.
+[its chezmoi notes](skills/lore-setup/chezmoi.md) to clone the scope repos
+without putting their names in your dotfiles repo.
 
 ## Update
 
