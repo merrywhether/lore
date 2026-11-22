@@ -20,7 +20,10 @@ In `.chezmoi.toml.tmpl`, store the list as machine-local data:
 ```
 
 The answer lands in `~/.config/chezmoi/chezmoi.toml`, never in the source repo.
-A work laptop might answer `example-lore/global,example-lore/work`.
+`promptStringOnce` asks only once, and a blank answer counts. To change the list
+later, run `chezmoi init --prompt` to be asked again, or edit `loreRepos` in
+that file, then run `chezmoi apply`. A work laptop might answer
+`example-lore/global,example-lore/work`.
 
 ## 2. Clone each scope as an external
 

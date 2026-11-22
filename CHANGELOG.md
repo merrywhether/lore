@@ -6,6 +6,17 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
+## Unreleased
+
+- `lore-setup` step 6 asks, for each source it copied, whether to remove the
+  original, keep it or replace it with a generated copy, and recommends removing
+  it.
+- `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
+  harness started in the code checkout does the cold read; never a fork or a
+  briefed subagent.
+- `chezmoi.md`: how to change a `loreRepos` answer, blank included.
+- README: the three questions the `skills` CLI asks without `-y`.
+
 ## 0.1.2 (schema 1)
 
 - `lore-setup` step 7: the routing check also passes when the harness's own

@@ -161,9 +161,12 @@ Only after the user OKs the whole list:
 - Run `scripts/check.sh` on each scope repo, then commit the paths you copied
   (explicit paths, per the `lore` skill's "Writing beside other agents") and
   push.
-- Leave the sources in place until the user switches over. Then offer to delete
-  each one, or to replace it with a generated copy for tools that can't read
-  `~/lore`, following the schema's "Generated copies".
+- **Then ask about each source.** Once its copy is proven, committed and pushed,
+  ask the user whether to remove the original, keep it, or replace it with a
+  generated copy for tools that can't read `~/lore` (the schema's "Generated
+  copies"). Recommend removing it: two copies of a note drift apart. Remove only
+  on a yes, moving it to the Trash where the system has one rather than deleting
+  it outright.
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
@@ -199,11 +202,17 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    scope's or the project's readme for the exact path is fine, as long as the
    routing file came before them.
 
-A run that can't start or can't sign in is not a failed install: report it as
-"not run", with the error, and ask the user to run that command in a terminal of
-their own. Running one harness's CLI inside another's session, such as
-`claude -p` from inside Claude Code, can fail for reasons that have nothing to
-do with lore.
+If the CLI can't run (it isn't signed in, or it won't start inside this
+session), but you can start a fresh session of that harness yourself, such as a
+new session in its desktop app, do that instead: start it in the same code
+checkout, with only the question as its first message. Never use a fork of this
+session or a subagent you brief: both carry this setup's context, so they could
+answer from it and pass a broken install.
+
+A run that can't start at all is not a failed install: report it as "not run",
+with the error, and ask the user to run that command in a terminal of their own.
+Running one harness's CLI inside another's session, such as `claude -p` from
+inside Claude Code, can fail for reasons that have nothing to do with lore.
 
 Report pass or fail per harness and per check, with the harness's version
 (`claude --version`, `codex --version`, `opencode --version`), not just "done".
