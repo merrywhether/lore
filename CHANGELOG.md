@@ -12,7 +12,8 @@ says so, and the steps are in
   machine, and to leave the notes alone, until setup is done.
 - `lore-setup` step 6 asks, for each source it copied, whether to remove the
   original, keep it or replace it with a generated copy, and recommends removing
-  it. A harness's global instruction file stays, keeping step 5's pointer.
+  it. A harness's global instruction file stays, keeping step 5's pointer. The
+  copy follows symlinks, and `diff -r` proves it.
 - `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
   harness started in the code checkout does the cold read; never a fork or a
   briefed subagent. The report says whether each check ran in the CLI or a fresh

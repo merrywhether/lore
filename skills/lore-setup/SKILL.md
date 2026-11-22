@@ -154,8 +154,9 @@ every machine, if the user keeps one, often in its `agents.md`.
 
 Only after the user OKs the whole list:
 
-- Copy with `rsync -a`, then prove the copy with `rsync -anc --itemize-changes`,
-  which must print nothing.
+- Copy with `rsync -aL`, so a symlinked source lands as its content rather than
+  a link, then prove the copy with `diff -r <source> <copy>`, which must print
+  nothing.
 - If the destination already exists, stop and ask: another machine copied it,
   and the two need merging by judgement, not by overwrite.
 - Scan each scope repo with `gitleaks dir <repo> --redact` before committing.
