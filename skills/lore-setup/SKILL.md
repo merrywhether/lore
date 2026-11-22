@@ -7,7 +7,9 @@ description: Set up lore (the user's private per-scope knowledge repos under ~/l
 
 An interview that sets up `~/lore` on this machine and moves the machine's
 existing agent notes and plans into it. Ask one question at a time, and change
-nothing until each answer is in. The conventions are in lore's
+nothing until each answer is in. Before you start, ask the user to pause other
+agent sessions on this machine, and to leave the notes alone, until setup is
+done: it moves those notes. The conventions are in lore's
 [schema](../lore/schema.md); this skill needs nothing from any earlier setup
 guide.
 
@@ -152,8 +154,9 @@ every machine, if the user keeps one, often in its `agents.md`.
 
 Only after the user OKs the whole list:
 
-- Copy with `rsync -a`, then prove the copy with `rsync -anc --itemize-changes`,
-  which must print nothing.
+- Copy with `rsync -aL`, so a symlinked source lands as its content rather than
+  a link, then prove the copy with `diff -r <source> <copy>`, which must print
+  nothing.
 - If the destination already exists, stop and ask: another machine copied it,
   and the two need merging by judgement, not by overwrite.
 - Scan each scope repo with `gitleaks dir <repo> --redact` before committing.
@@ -161,9 +164,14 @@ Only after the user OKs the whole list:
 - Run `scripts/check.sh` on each scope repo, then commit the paths you copied
   (explicit paths, per the `lore` skill's "Writing beside other agents") and
   push.
-- Leave the sources in place until the user switches over. Then offer to delete
-  each one, or to replace it with a generated copy for tools that can't read
-  `~/lore`, following the schema's "Generated copies".
+- **Then ask about each source.** Once its copy is proven, committed and pushed,
+  ask the user whether to remove the original, keep it, or replace it with a
+  generated copy for tools that can't read `~/lore` (the schema's "Generated
+  copies"). Recommend removing it: two copies of a note drift apart. Remove only
+  on a yes, moving it to the Trash where the system has one rather than deleting
+  it outright. A harness's global instruction file stays, since it holds step
+  5's pointer to the routing file: remove from it only what you copied, and keep
+  that pointer even if the copy included it.
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
@@ -199,14 +207,18 @@ skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
    scope's or the project's readme for the exact path is fine, as long as the
    routing file came before them.
 
-A run that can't start or can't sign in is not a failed install: report it as
-"not run", with the error, and ask the user to run that command in a terminal of
-their own. Running one harness's CLI inside another's session, such as
-`claude -p` from inside Claude Code, can fail for reasons that have nothing to
-do with lore.
+If the CLI can't run (it isn't signed in, or it won't start inside this
+session), but you can start a fresh session of that harness yourself, such as a
+new session in its desktop app, do that instead: start it in the same code
+checkout, with only the question as its first message. Never use a fork of this
+session or a subagent you brief: both carry this setup's context, so they could
+answer from it and pass a broken install.
 
-Report pass or fail per harness and per check, with the harness's version
-(`claude --version`, `codex --version`, `opencode --version`), not just "done".
-For a failure, say what the harness answered and where it looked. When a harness
-passes, offer to add it to the "Verified so far" line in lore's README, with its
-version, as a pull request the user approves.
+A run that can't start at all is not a failed install: report it as "not run",
+with the error, and ask the user to run that command in a terminal of their own.
+Running one harness's CLI inside another's session, such as `claude -p` from
+inside Claude Code, can fail for reasons that have nothing to do with lore.
+
+Report pass or fail per harness and per check, not just "done". Say whether each
+check ran in the CLI or in a fresh session, and the version of what ran it. For
+a failure, say what the harness answered and where it looked.

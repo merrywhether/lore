@@ -39,8 +39,11 @@ All harnesses at once, with the `skills` CLI:
 npx skills add merrywhether/lore -g -a claude-code -a codex
 ```
 
+Run without `-y`, the CLI asks which skills to install (choose all four, since
+they link to each other) and whether to symlink or copy (symlink).
+
 `-g` installs them for every project, in each harness's global skills folder. To
-pin a release, name its tag: `merrywhether/lore@v0.1.1`
+pin a release, name its tag: `merrywhether/lore@v0.1.3`
 ([CHANGELOG.md](CHANGELOG.md) lists them).
 
 If you edit the skills yourself, clone this repo instead and link each folder
