@@ -59,6 +59,7 @@ HEAD
 	readme=$(mktemp)
 	for dir in "$root"/*/; do
 		dir=${dir%/}
+		[[ -d $dir ]] || continue # no scopes: the glob matched nothing
 		name=$(basename "$dir")
 		# Check and render one snapshot, so an edit between the two can't slip through.
 		: >"$readme"

@@ -57,7 +57,3 @@ When the setup changes a file chezmoi manages, such as a harness's global
 instructions, change its source with `chezmoi edit <file>` and then apply.
 Editing the file itself is undone by the next apply. `chezmoi managed` lists the
 files it owns.
-
-Let the `lore` skill's `routing.sh --write` write `~/lore/readme.md`, rather
-than a chezmoi template, so the routing file has one writer and stays in step
-with the scope readmes.

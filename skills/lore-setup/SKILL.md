@@ -1,6 +1,6 @@
 ---
 name: lore-setup
-description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, gather the machine's existing agent notes and plans into it, and migrate scope repos after a schema change. Use when the user says "set up lore", "install lore", "add lore to this machine", "upgrade lore" or "migrate lore", or asks to create a new lore scope repo.
+description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, gather the machine's existing agent notes and plans into it, and migrate scope repos after a schema change. Use when the user says "set up lore", "install lore", "add lore to this machine", "upgrade lore" or "migrate lore", or asks to create a new lore scope repo. With "reroute" ("/lore-setup reroute", "rebuild lore routing"), it only rebuilds the routing file.
 ---
 
 # lore-setup
@@ -13,6 +13,9 @@ done: it moves those notes. The conventions are in lore's
 [schema](../lore/schema.md); this skill needs nothing from any earlier setup
 guide.
 
+**Reroute only.** Run as `lore-setup reroute`, or asked only to rebuild the
+routing file, do step 4 alone, with no interview.
+
 ## 1. See what's already here
 
 The machine may be half set up already: by hand, by a dotfiles manager, or by an
@@ -22,8 +25,6 @@ found:
 - Does `~/lore/` exist? Which scope repos are in it, and does each pass the
   `lore` skill's `scripts/check.sh`? Which schema version does each follow (the
   `schema` field in its readme)?
-- Who writes `~/lore/readme.md`? Look for a dotfiles template that produces it
-  (for chezmoi: `chezmoi source-path ~/lore/readme.md`).
 - Which harnesses are installed, and does each one's global instructions already
   point at `~/lore/readme.md`?
 - Does a dotfiles manager own those instruction files? With chezmoi,
@@ -62,9 +63,15 @@ skills, stop and ask the user to update the skills (lore's README,
 
 ## 4. Build the routing file
 
-Run the `lore` skill's `scripts/routing.sh --write`. If a dotfiles template
-writes `~/lore/readme.md` today, offer to retire it, so the routing file has one
-writer.
+`~/lore/readme.md` is built from the scope checkouts in `~/lore`, so rebuild it
+whenever a scope is cloned or removed, a scope readme's `scope`, `machines` or
+`writes` line changes, or a scope gains or loses its `agents.md`. Build from the
+checkouts as they are: don't pull or otherwise change them.
+
+1. Run the `lore` skill's `scripts/routing.sh`. If it warns about a scope,
+   report that scope and what's wrong, even if the output matches today's file.
+2. Compare its output with `~/lore/readme.md`. If they differ and it warned
+   about nothing, run it with `--write`, and tell the user what changed.
 
 ## 5. Point each harness at lore
 

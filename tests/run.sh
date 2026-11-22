@@ -81,6 +81,14 @@ contains "routing.sh lists its machines" "$tmp/routing.md" "  - Cloned on: work 
 expect "routing.sh --write writes a complete root" "$routing" --root "$root" --write
 contains "the written routing file lists the scope" "$root/readme.md" '- **`work/`**'
 
+# The last scope removed: --write replaces the old routing file with an empty list.
+empty="$tmp/lore-empty"
+mkdir -p "$empty"
+cp "$root/readme.md" "$empty/readme.md"
+expect "routing.sh --write writes a root with no scopes" "$routing" --root "$empty" --write
+contains "  and lists none" "$empty/readme.md" "- None yet."
+lacks "  and drops the removed scope" "$empty/readme.md" '- **`work/`**'
+
 # --- Schema versions --------------------------------------------------------------------
 
 current=$(sed -n 's/^current_schema=//p' "$check")
