@@ -24,7 +24,10 @@ For a scope repo set up before versioning (its readme has no `schema` field, or
      plain line.
 2. Check by hand that each code repo with notes, in `repos/` or a project, has
    an upstream page `repos/<code-repo>.md` with `repo`, `upstream` and `local`.
-   `check.sh` checks the pages that exist, but can't tell which are missing.
+   Also check that each project's readme lists the code repos it covers, linked
+   to those pages: the `lore` skill finds a project's notes through that list.
+   `check.sh` checks the pages that exist, but reads neither project readmes nor
+   which pages are missing.
 3. Set `schema: 1` in the readme's frontmatter, replacing any `schema` line
    already there.
 4. Run `check.sh` again. It must print `ok`.
