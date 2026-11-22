@@ -72,11 +72,13 @@ npx skills check
 npx skills update -g
 ```
 
-With a clone, `git pull` instead. Then read [CHANGELOG.md](CHANGELOG.md). If a
-release raised the schema version, your scope repos need migrating: ask your
-agent to "set up lore" again, and `lore-setup` finds each scope repo that's
-behind and walks you through its migration. The `lore` skill's `check.sh` also
-reports a scope repo that's behind.
+`update` keeps a pinned install on its tag. To move to a newer release, run
+`npx skills add` again with the new tag. With a clone, `git pull` instead. Then
+read [CHANGELOG.md](CHANGELOG.md). If a release raised the schema version, your
+scope repos need migrating: ask your agent to "set up lore" again, and
+`lore-setup` finds each scope repo that's behind and walks you through its
+migration. The `lore` skill's `check.sh` also reports a scope repo that's
+behind.
 
 ## License
 

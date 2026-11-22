@@ -35,8 +35,8 @@ that names files deeper inside).
 its readme has no `schema` field, apply the steps in
 [migrations.md](migrations.md) in order, starting after the repo's version. Show
 each change and wait for the user's OK. If a scope repo is ahead of these
-skills, stop and ask the user to update the skills (`npx skills update -g`)
-before going on.
+skills, stop and ask the user to update the skills (lore's README,
+[Update](https://github.com/merrywhether/lore#update)) before going on.
 
 ## 2. Where the scope repos live
 

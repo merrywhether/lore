@@ -36,12 +36,13 @@ check_fields() {
 if has_exact_file "$repo" readme.md; then
 	check_fields readme.md scope machines writes schema
 	schema=$(frontmatter_value "$repo/readme.md" schema 2>/dev/null || true)
-	if [[ -n $schema && ! $schema =~ ^[0-9]+$ ]]; then
-		problem "readme.md frontmatter \"schema\" must be a whole number, not \"$schema\""
+	# A plain decimal with no leading zero and at most 9 digits, so bash compares it safely.
+	if [[ -n $schema && ! $schema =~ ^(0|[1-9][0-9]{0,8})$ ]]; then
+		problem "readme.md frontmatter \"schema\" must be a whole number like 1, not \"$schema\""
 	elif [[ -n $schema ]] && ((schema < current_schema)); then
 		problem "readme.md follows schema $schema, and these skills follow schema $current_schema: migrate it with the lore-setup skill"
 	elif [[ -n $schema ]] && ((schema > current_schema)); then
-		problem "readme.md follows schema $schema, newer than these skills (schema $current_schema): update them with npx skills update -g"
+		problem "readme.md follows schema $schema, newer than these skills (schema $current_schema): update them (https://github.com/merrywhether/lore#update)"
 	fi
 	grep -q '^# Lore: ' "$repo/readme.md" || problem "readme.md has no '# Lore: <scope>' title"
 	for section in "Never put here" "Layout" "Status"; do

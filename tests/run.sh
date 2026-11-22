@@ -102,6 +102,8 @@ with_schema() {
 for case in "behind:$((current - 1)):migrate it with the lore-setup skill" \
 	"ahead:$((current + 1)):newer than these skills" \
 	"not-a-number:one:must be a whole number" \
+	"leading-zero:08:must be a whole number" \
+	"too-long:18446744073709551617:must be a whole number" \
 	'missing::frontmatter has no "schema"'; do
 	IFS=: read -r name value message <<<"$case"
 	if with_schema "$name" "$value"; then pass "check.sh rejects a scope whose schema is $name"; else fail "check.sh rejects a scope whose schema is $name"; fi
