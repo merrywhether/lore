@@ -216,6 +216,4 @@ inside Claude Code, can fail for reasons that have nothing to do with lore.
 
 Report pass or fail per harness and per check, with the harness's version
 (`claude --version`, `codex --version`, `opencode --version`), not just "done".
-For a failure, say what the harness answered and where it looked. When a harness
-passes, offer to add it to the "Verified so far" line in lore's README, with its
-version, as a pull request the user approves.
+For a failure, say what the harness answered and where it looked.

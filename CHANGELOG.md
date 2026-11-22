@@ -13,7 +13,8 @@ says so, and the steps are in
   it.
 - `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
   harness started in the code checkout does the cold read; never a fork or a
-  briefed subagent.
+  briefed subagent. It no longer offers a pull request to lore's "Verified so
+  far" line.
 - `chezmoi.md`: how to change a `loreRepos` answer, blank included.
 - README: the three questions the `skills` CLI asks without `-y`.
 
