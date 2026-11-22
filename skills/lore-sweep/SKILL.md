@@ -21,6 +21,9 @@ already in lore.
 
 - Read `~/lore/readme.md` and the readme of each scope repo on this machine, so
   you know which scopes and projects exist.
+- If your harness gives you no known way to list its memory, or to change one
+  fact in it, say what's missing and leave that memory alone. Never guess at its
+  files or database.
 - Find all of your memory first. A harness may keep a separate memory for each
   directory a session starts in, and tell you only where the current directory's
   memory lives. That's about where sessions start, not about git checkouts: one
@@ -73,8 +76,10 @@ While sorting:
 - **If lore already says something different,** don't overwrite either side:
   list both, and ask which wins.
 - **Rewrite links.** Lore uses relative markdown links only. A memory's link to
-  another memory, such as a `[[name]]` wikilink, becomes a relative link where
-  its target also lands in lore; otherwise drop the link and keep the words.
+  another memory, such as a `[[name]]` wikilink, becomes a relative link only
+  where its target is an approved move into the same scope repo. Otherwise drop
+  the link and keep the words: a link into another scope would show its path,
+  and break on machines without that scope.
 
 ## 3. Show the list, then wait
 
@@ -86,6 +91,8 @@ row.
 A first sweep can be large (a hundred memories across a dozen projects). Then
 work in rounds: group the rows by destination scope and project, show about 20
 rows per round, and move each approved round (step 4) before listing the next.
+Moving a round changes the memories it touched, so read those again before the
+next round, and list any of their facts whose text changed for approval again.
 
 ## 4. Move
 

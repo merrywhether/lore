@@ -21,12 +21,13 @@ Lore is the user's private knowledge in `~/lore/`: a routing file,
    folder name; if the matches disagree, ask (the schema's "Checkouts").
 3. A folder whose `GENERATED.md` frontmatter says `generated: lore` is a
    generated copy of lore (the schema's "Generated copies"): never edit it. Edit
-   its `sources` instead, after checking that each is in a scope repo the
-   routing file lists on this machine. Then run its `rebuild` command only if
-   it's a script in a scope repo's `skills/` that reads only those sources and
-   writes only to the folder holding this marker. If either is unclear, show the
-   user the command and ask. A `GENERATED.md` without that field belongs to some
-   other tool.
+   its `sources` instead, after checking that each is in the scope repo step 2
+   found for this checkout. A source in any other scope, even one on this
+   machine, needs the user's OK: the copy would show that scope's notes to tools
+   in this checkout. Then run its `rebuild` command only if it's a script in a
+   scope repo's `skills/` that reads only those sources and writes only to the
+   folder holding this marker. If either is unclear, show the user the command
+   and ask. A `GENERATED.md` without that field belongs to some other tool.
 
 ## Writing ("update lore")
 
