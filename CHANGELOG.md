@@ -6,13 +6,13 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
-## Unreleased
+## 0.1.3 (schema 1)
 
 - `lore-setup` starts by asking the user to pause other agent sessions on the
-  machine until setup is done.
+  machine, and to leave the notes alone, until setup is done.
 - `lore-setup` step 6 asks, for each source it copied, whether to remove the
   original, keep it or replace it with a generated copy, and recommends removing
-  it.
+  it. A harness's global instruction file stays, keeping step 5's pointer.
 - `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
   harness started in the code checkout does the cold read; never a fork or a
   briefed subagent. The report says whether each check ran in the CLI or a fresh

@@ -8,9 +8,10 @@ description: Set up lore (the user's private per-scope knowledge repos under ~/l
 An interview that sets up `~/lore` on this machine and moves the machine's
 existing agent notes and plans into it. Ask one question at a time, and change
 nothing until each answer is in. Before you start, ask the user to pause other
-agent sessions on this machine until setup is done: it moves the notes they
-write. The conventions are in lore's [schema](../lore/schema.md); this skill
-needs nothing from any earlier setup guide.
+agent sessions on this machine, and to leave the notes alone, until setup is
+done: it moves those notes. The conventions are in lore's
+[schema](../lore/schema.md); this skill needs nothing from any earlier setup
+guide.
 
 ## 1. See what's already here
 
@@ -167,7 +168,8 @@ Only after the user OKs the whole list:
   generated copy for tools that can't read `~/lore` (the schema's "Generated
   copies"). Recommend removing it: two copies of a note drift apart. Remove only
   on a yes, moving it to the Trash where the system has one rather than deleting
-  it outright.
+  it outright. A harness's global instruction file stays, since it holds step
+  5's pointer to the routing file: remove from it only what you copied.
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
