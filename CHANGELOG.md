@@ -6,7 +6,7 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
-## Unreleased
+## 0.1.2 (schema 1)
 
 - `lore-setup` step 7: the routing check also passes when the harness's own
   global instructions, which step 5 points at the routing file, come first.
