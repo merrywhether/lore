@@ -10,13 +10,15 @@ says so, and the steps are in
 
 - `lore-setup` step 6 asks, for each source it copied, whether to remove the
   original, keep it or replace it with a generated copy, and recommends removing
-  it.
+  it. It checks the original against the copy again right before removing or
+  replacing it, and leaves one that changed.
 - `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
   harness started in the code checkout does the cold read; never a fork or a
-  briefed subagent. It no longer offers a pull request to lore's "Verified so
-  far" line.
+  briefed subagent. The report says whether each check ran in the CLI or a fresh
+  session, with that one's version. It no longer offers a pull request to lore's
+  "Verified so far" line.
 - `chezmoi.md`: how to change a `loreRepos` answer, blank included.
-- README: the three questions the `skills` CLI asks without `-y`.
+- README: what the `skills` CLI asks without `-y`.
 
 ## 0.1.2 (schema 1)
 

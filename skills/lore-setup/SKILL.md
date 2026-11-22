@@ -165,8 +165,10 @@ Only after the user OKs the whole list:
   ask the user whether to remove the original, keep it, or replace it with a
   generated copy for tools that can't read `~/lore` (the schema's "Generated
   copies"). Recommend removing it: two copies of a note drift apart. Remove only
-  on a yes, moving it to the Trash where the system has one rather than deleting
-  it outright.
+  on a yes, once nothing still writes to the original, moving it to the Trash
+  where the system has one rather than deleting it outright. Right before you
+  remove or replace it, check it against the copy again; if it changed, leave it
+  and show the user the difference.
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
@@ -214,6 +216,8 @@ with the error, and ask the user to run that command in a terminal of their own.
 Running one harness's CLI inside another's session, such as `claude -p` from
 inside Claude Code, can fail for reasons that have nothing to do with lore.
 
-Report pass or fail per harness and per check, with the harness's version
-(`claude --version`, `codex --version`, `opencode --version`), not just "done".
-For a failure, say what the harness answered and where it looked.
+Report pass or fail per harness and per check, not just "done". Say whether each
+check ran in the CLI or in a fresh session, with the version of what ran it
+where you can find it: a desktop app may bundle a different version than the
+CLI's (`claude --version`, `codex --version`, `opencode --version`). For a
+failure, say what the harness answered and where it looked.
