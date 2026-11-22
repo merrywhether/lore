@@ -109,11 +109,10 @@ known folder names:
   any folder that matches more than one group, and let them decide.
 - **Global instruction files:** `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.config/opencode/AGENTS.md`.
-- **Agent memory folders**, such as `~/.claude/projects/*/memory/`: list what
-  each holds, but keep them out of the copy below. One memory file can mix a
-  fact for lore with one that must stay, so once the rest is in place, run the
-  `lore-sweep` skill, which sorts and moves each fact on its own. If it isn't
-  installed, install it first with
+- **Harness memory:** keep it out of the copy below. One memory can mix a fact
+  for lore with one that must stay, so once the rest is in place, run the
+  `lore-sweep` skill in each harness that keeps memory; each one sorts and moves
+  its own memory fact by fact. If it isn't installed, install it first with
   [the README's commands](https://github.com/merrywhether/lore#install).
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
