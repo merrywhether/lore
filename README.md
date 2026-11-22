@@ -36,11 +36,11 @@ Each skill is a folder in the portable Agent Skills format: a `SKILL.md` with
 All harnesses at once, with the `skills` CLI:
 
 ```bash
-npx skills add merrywhether/lore -g -a claude-code -a codex -a opencode
+npx skills add merrywhether/lore -g -a claude-code -a codex
 ```
 
 `-g` installs them for every project, in each harness's global skills folder. To
-pin a release, name its tag: `merrywhether/lore@v0.1.0`
+pin a release, name its tag: `merrywhether/lore@v0.1.1`
 ([CHANGELOG.md](CHANGELOG.md) lists them).
 
 If you edit the skills yourself, clone this repo instead and link each folder
@@ -52,9 +52,12 @@ under `skills/` into the harness's skills folder, so your changes are live:
 | Codex       | `~/.agents/skills/<name>/`                                        |
 | opencode    | `~/.config/opencode/skills/<name>/` (it also reads the two above) |
 
-These paths come from each harness's docs and haven't been checked on a real
-machine yet. `lore-setup` ends by checking that each harness finds the skills.
-Verified so far: none.
+The CLI keeps one copy in `~/.agents/skills/`, which Codex and opencode both
+read, and links each skill into `~/.claude/skills/` for Claude Code, so
+`-a codex` covers opencode too. `lore-setup` ends by checking that each harness
+finds the skills and the routing file. Verified so far, with v0.1.1 on
+2026-11-21: Claude Code 2.1.325 and Codex 0.169.0. opencode hasn't been checked;
+its paths come from its docs.
 
 Then ask your agent to "set up lore" and the `lore-setup` skill takes it from
 there: it creates or clones the scope repos, builds the routing file, points
