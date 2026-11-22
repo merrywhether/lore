@@ -21,9 +21,15 @@ already in lore.
 
 - Read `~/lore/readme.md` and the readme of each scope repo on this machine, so
   you know which scopes and projects exist.
-- List what your memory holds, every project or folder of it. If it's files,
-  note each file's checksum (`shasum`) when you read it, and sort from that same
-  read, so the checksum matches what you sorted.
+- Find all of your memory first. A harness may keep a separate memory for each
+  directory a session starts in, and tell you only where the current directory's
+  memory lives. That's about where sessions start, not about git checkouts: one
+  checkout can have several memories (sessions started in its subfolders), and a
+  memory can cover no checkout at all. Find the memory for every other directory
+  too, and say which ones you found.
+- List what each memory holds. If it's files, note each file's checksum
+  (`shasum`) when you read it, and sort from that same read, so the checksum
+  matches what you sorted.
 - Read only memory, never sign-in or key files or settings that hold tokens.
 
 ## 2. Sort each fact
