@@ -8,10 +8,11 @@ says so, and the steps are in
 
 ## 0.2.0 (schema 1)
 
-- `lore-setup reroute` only rebuilds the routing file: it pulls the scopes, and
-  reruns `routing.sh --write` if its output differs. The `lore` skill says to
-  run it after cloning or removing a scope, or changing a scope readme's
-  frontmatter.
+- `lore-setup reroute` only rebuilds the routing file, from the scope checkouts
+  as they are. It reports any scope `routing.sh` warns about, and reruns it with
+  `--write` only if its output differs. The `lore` skill says to run it after
+  cloning or removing a scope, changing a scope readme's frontmatter, or adding
+  or removing a scope's `agents.md`.
 - `lore-setup` and `chezmoi.md` no longer look for a dotfiles template that
   writes the routing file, or offer to retire one: nothing tells anyone to make
   one, and `routing.sh` writes it.

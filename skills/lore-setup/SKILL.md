@@ -63,15 +63,15 @@ skills, stop and ask the user to update the skills (lore's README,
 
 ## 4. Build the routing file
 
-`~/lore/readme.md` is built from the scope readmes' frontmatter, so rebuild it
-whenever a scope is cloned or removed, or a scope readme's `scope`, `machines`
-or `writes` line changes:
+`~/lore/readme.md` is built from the scope checkouts in `~/lore`, so rebuild it
+whenever a scope is cloned or removed, a scope readme's `scope`, `machines` or
+`writes` line changes, or a scope gains or loses its `agents.md`. Build from the
+checkouts as they are: don't pull or otherwise change them.
 
-1. Pull each scope repo, as in the `lore` skill's "Writing beside other agents",
-   so the frontmatter is current.
-2. Compare the `lore` skill's `scripts/routing.sh` output with
-   `~/lore/readme.md`. If they differ, run it with `--write`, and tell the user
-   what changed.
+1. Run the `lore` skill's `scripts/routing.sh`. If it warns about a scope,
+   report that scope and what's wrong, even if the output matches today's file.
+2. Compare its output with `~/lore/readme.md`. If they differ and it warned
+   about nothing, run it with `--write`, and tell the user what changed.
 
 ## 5. Point each harness at lore
 
