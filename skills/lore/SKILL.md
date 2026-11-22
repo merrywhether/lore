@@ -95,8 +95,9 @@ pull request, an issue, a public repo) unless the user asks.
   `~/lore` counts as a scope: one without a usable `readme.md` (missing, named
   in another case, or with a missing, quoted or multi-line field) is left out
   with a warning, and `--write` refuses to write until every scope is fixed, so
-  a working routing file is never replaced by a worse one. Run it with `--write`
-  after cloning or removing a scope, or changing a scope readme's frontmatter.
+  a working routing file is never replaced by a worse one. After cloning or
+  removing a scope, or changing a scope readme's frontmatter, rebuild it with
+  `lore-setup reroute`.
 - `scripts/check.sh <scope repo>` checks a scope repo against the readme
   contract, the layout and its upstream pages' frontmatter, and reports a repo
   whose `schema` is behind or ahead of these skills. `check.sh --schema` prints

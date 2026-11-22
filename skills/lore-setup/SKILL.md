@@ -1,6 +1,6 @@
 ---
 name: lore-setup
-description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, gather the machine's existing agent notes and plans into it, and migrate scope repos after a schema change. Use when the user says "set up lore", "install lore", "add lore to this machine", "upgrade lore" or "migrate lore", or asks to create a new lore scope repo.
+description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, gather the machine's existing agent notes and plans into it, and migrate scope repos after a schema change. Use when the user says "set up lore", "install lore", "add lore to this machine", "upgrade lore" or "migrate lore", or asks to create a new lore scope repo. With "reroute" ("/lore-setup reroute", "rebuild lore routing"), it only rebuilds the routing file.
 ---
 
 # lore-setup
@@ -12,6 +12,9 @@ agent sessions on this machine, and to leave the notes alone, until setup is
 done: it moves those notes. The conventions are in lore's
 [schema](../lore/schema.md); this skill needs nothing from any earlier setup
 guide.
+
+**Reroute only.** Run as `lore-setup reroute`, or asked only to rebuild the
+routing file, do step 4 alone, with no interview.
 
 ## 1. See what's already here
 
@@ -60,7 +63,15 @@ skills, stop and ask the user to update the skills (lore's README,
 
 ## 4. Build the routing file
 
-Run the `lore` skill's `scripts/routing.sh --write`.
+`~/lore/readme.md` is built from the scope readmes' frontmatter, so rebuild it
+whenever a scope is cloned or removed, or a scope readme's `scope`, `machines`
+or `writes` line changes:
+
+1. Pull each scope repo, as in the `lore` skill's "Writing beside other agents",
+   so the frontmatter is current.
+2. Compare the `lore` skill's `scripts/routing.sh` output with
+   `~/lore/readme.md`. If they differ, run it with `--write`, and tell the user
+   what changed.
 
 ## 5. Point each harness at lore
 
