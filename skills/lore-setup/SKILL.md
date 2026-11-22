@@ -170,7 +170,8 @@ Only after the user OKs the whole list:
   copies"). Recommend removing it: two copies of a note drift apart. Remove only
   on a yes, moving it to the Trash where the system has one rather than deleting
   it outright. A harness's global instruction file stays, since it holds step
-  5's pointer to the routing file: remove from it only what you copied.
+  5's pointer to the routing file: remove from it only what you copied, and keep
+  that pointer even if the copy included it.
 
 Never read or copy another machine's notes, and never move content into a
 broader scope without the user's review.
