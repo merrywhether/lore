@@ -1,14 +1,15 @@
 ---
 name: lore-setup
-description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, and gather the machine's existing agent notes and plans into it. Use when the user says "set up lore", "install lore", "add lore to this machine", or asks to create a new lore scope repo.
+description: Set up lore (the user's private per-scope knowledge repos under ~/lore) on a machine, by interview, gather the machine's existing agent notes and plans into it, and migrate scope repos after a schema change. Use when the user says "set up lore", "install lore", "add lore to this machine", "upgrade lore" or "migrate lore", or asks to create a new lore scope repo.
 ---
 
 # lore-setup
 
 An interview that sets up `~/lore` on this machine and moves the machine's
 existing agent notes and plans into it. Ask one question at a time, and change
-nothing until each answer is in. The conventions are in this repo's
-`docs/schema.md`; this skill needs nothing from any earlier setup guide.
+nothing until each answer is in. The conventions are in lore's
+[schema](../lore/schema.md); this skill needs nothing from any earlier setup
+guide.
 
 ## 1. See what's already here
 
@@ -17,7 +18,8 @@ older version of this setup. Before asking anything, look, and report what you
 found:
 
 - Does `~/lore/` exist? Which scope repos are in it, and does each pass the
-  `lore` skill's `scripts/check.sh`?
+  `lore` skill's `scripts/check.sh`? Which schema version does each follow (the
+  `schema` field in its readme)?
 - Who writes `~/lore/readme.md`? Look for a dotfiles template that produces it
   (for chezmoi: `chezmoi source-path ~/lore/readme.md`).
 - Which harnesses are installed, and does each one's global instructions already
@@ -29,6 +31,13 @@ Then do only the steps that are missing, and fold anything that doesn't match
 the schema into it (a scope repo with extra top-level folders, a routing file
 that names files deeper inside).
 
+**Migrate first.** If `check.sh` says a scope repo is behind these skills, or
+its readme has no `schema` field, apply the steps in
+[migrations.md](migrations.md) in order, starting after the repo's version. Show
+each change and wait for the user's OK. If a scope repo is ahead of these
+skills, stop and ask the user to update the skills (lore's README,
+[Update](https://github.com/merrywhether/lore#update)) before going on.
+
 ## 2. Where the scope repos live
 
 - Which git host and which org or account hold the scope repos? Recommend an org
@@ -38,13 +47,14 @@ that names files deeper inside).
   personal machine never does. If a scope repo's readme says which machines it
   belongs on (`machines:`), follow it.
 - Should any scope be created now? If yes, create it private, write its readme
-  per the contract, add `projects/` and `skills/`, then commit and push. Check
-  that the org has no public repos.
+  per the contract (`check.sh --schema` prints the current `schema` version),
+  add `projects/` and `skills/`, then commit and push. Check that the org has no
+  public repos.
 
 ## 3. Clone
 
-- **chezmoi:** if it manages this machine's dotfiles, follow `docs/chezmoi.md`.
-  It keeps the scope list as machine-local data.
+- **chezmoi:** if it manages this machine's dotfiles, follow
+  [chezmoi.md](chezmoi.md). It keeps the scope list as machine-local data.
 - **Otherwise:** clone each scope with `git` into `~/lore/<scope>/`.
 - Check each repo with the `lore` skill's `scripts/check.sh`.
 
@@ -103,7 +113,8 @@ known folder names:
   each holds, but keep them out of the copy below. One memory file can mix a
   fact for lore with one that must stay, so once the rest is in place, run the
   `lore-sweep` skill, which sorts and moves each fact on its own. If it isn't
-  installed, install it first with the README's commands.
+  installed, install it first with
+  [the README's commands](https://github.com/merrywhether/lore#install).
 - **Chat histories**, for each harness installed: Claude Code's
   `~/.claude/projects/*/`, Codex's `~/.codex/sessions/`, and VS Code Copilot's
   `chatSessions/` under
@@ -169,8 +180,9 @@ pass. For the same reason, pick a checkout with no project-local copy of these
 skills (in its `.claude/skills/`, `.agents/skills/` or `.opencode/skills/`).
 
 1. **The skill folders** `lore`, `lore-setup`, `lore-sweep` and `lore-collab`
-   exist in that harness's global skills folder (the README's Install table). If
-   any is missing, install it with the README's commands, then check again.
+   exist in that harness's global skills folder
+   ([the README's Install table](https://github.com/merrywhether/lore#install)).
+   If any is missing, install it with the README's commands, then check again.
 2. **A cold read of the skills,** in a fresh non-interactive run:
    - Claude Code:
      `claude -p "Which skills do you have whose name starts with lore? Name them."`
@@ -195,5 +207,5 @@ do with lore.
 Report pass or fail per harness and per check, with the harness's version
 (`claude --version`, `codex --version`, `opencode --version`), not just "done".
 For a failure, say what the harness answered and where it looked. When a harness
-passes, offer to add it to the "Verified so far" line in this repo's README,
-with its version, as a pull request the user approves.
+passes, offer to add it to the "Verified so far" line in lore's README, with its
+version, as a pull request the user approves.

@@ -6,8 +6,8 @@ description: Read and write the user's private lore (~/lore), the per-scope git 
 # lore
 
 Lore is the user's private knowledge in `~/lore/`: a routing file,
-`~/lore/readme.md`, and one private git repo per scope. The rules are in this
-repo's `docs/schema.md`; this skill is how to use them day to day.
+`~/lore/readme.md`, and one private git repo per scope. The rules are in lore's
+[schema](schema.md); this skill is how to use them day to day.
 
 ## At the start of work
 
@@ -97,4 +97,6 @@ pull request, an issue, a public repo) unless the user asks.
   a working routing file is never replaced by a worse one. Don't use `--write`
   where something else (a dotfiles template) owns that file.
 - `scripts/check.sh <scope repo>` checks a scope repo against the readme
-  contract, the layout and its upstream pages' frontmatter.
+  contract, the layout and its upstream pages' frontmatter, and reports a repo
+  whose `schema` is behind or ahead of these skills. `check.sh --schema` prints
+  the schema version these skills follow.

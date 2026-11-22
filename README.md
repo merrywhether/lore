@@ -9,7 +9,8 @@ itself; yours lives in your own private repos.
   private git repo per scope (`~/lore/global/`, `~/lore/work/`, …).
 - **Agents read `~/lore/readme.md` first.** It says which scope repos this
   machine has and where writes go.
-- **The rules** are in [docs/schema.md](docs/schema.md).
+- **The rules** are in [skills/lore/schema.md](skills/lore/schema.md), which
+  installs with the skills.
 - **Keep the scope repos in an org of their own**, used only for lore: every
   repo private, no GitHub apps or other third-party integrations installed. Then
   "nothing here is public, and no service reads it" is one check, and a mistake
@@ -38,7 +39,12 @@ All harnesses at once, with the `skills` CLI:
 npx skills add merrywhether/lore -g -a claude-code -a codex -a opencode
 ```
 
-Or copy or link each folder under `skills/` into the harness's skills folder:
+`-g` installs them for every project, in each harness's global skills folder. To
+pin a release, name its tag: `merrywhether/lore@v0.1.0`
+([CHANGELOG.md](CHANGELOG.md) lists them).
+
+If you edit the skills yourself, clone this repo instead and link each folder
+under `skills/` into the harness's skills folder, so your changes are live:
 
 | Harness     | Global skills folder                                              |
 | ----------- | ----------------------------------------------------------------- |
@@ -56,8 +62,23 @@ each harness at it, and gathers the notes and plans already on the machine into
 lore.
 
 If chezmoi manages your dotfiles, `lore-setup` follows
-[docs/chezmoi.md](docs/chezmoi.md) to clone the scope repos without putting
-their names in your dotfiles repo.
+[its chezmoi notes](skills/lore-setup/chezmoi.md) to clone the scope repos
+without putting their names in your dotfiles repo.
+
+## Update
+
+```bash
+npx skills check
+npx skills update -g
+```
+
+`update` keeps a pinned install on its tag. To move to a newer release, run
+`npx skills add` again with the new tag. With a clone, `git pull` instead. Then
+read [CHANGELOG.md](CHANGELOG.md). If a release raised the schema version, your
+scope repos need migrating: ask your agent to "set up lore" again, and
+`lore-setup` finds each scope repo that's behind and walks you through its
+migration. The `lore` skill's `check.sh` also reports a scope repo that's
+behind.
 
 ## License
 

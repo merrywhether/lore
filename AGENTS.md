@@ -12,7 +12,7 @@ real lore comes in here.
 - **Skills stay portable:** `SKILL.md` frontmatter holds `name` and
   `description` only. Scripts are bash, with no dependencies beyond a POSIX
   system, git and `awk`.
-- **Plain markdown:** relative links (`[schema](docs/schema.md)`), YAML
+- **Plain markdown:** relative links (`[schema](skills/lore/schema.md)`), YAML
   frontmatter for metadata, nothing that needs a particular editor.
 - **Format before committing:** `pnpm install` once, then `pnpm format`.
   `pnpm lint` checks it. Biome formats the Markdown (wrapped at its default 80

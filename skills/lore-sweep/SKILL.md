@@ -8,8 +8,8 @@ description: Sweep a harness's memory files (such as Claude Code's ~/.claude/pro
 Harness memory keeps filling with facts that belong in lore, even when the
 steering points at lore. Pointing a memory folder into a scope repo doesn't
 work, because one memory folder mixes scopes. So treat memory as a short-lived
-inbox, and sweep it on a regular cadence. The rules are in this repo's
-`docs/schema.md`; every write follows the `lore` skill.
+inbox, and sweep it on a regular cadence. The rules are in lore's
+[schema](../lore/schema.md); every write follows the `lore` skill.
 
 ## 1. List the memory
 
