@@ -77,9 +77,10 @@ While sorting:
   list both, and ask which wins.
 - **Rewrite links.** Lore uses relative markdown links only. A memory's link to
   another memory, such as a `[[name]]` wikilink, becomes a relative link only
-  where its target is an approved move into the same scope repo. Otherwise drop
-  the link and keep the words: a link into another scope would show its path,
-  and break on machines without that scope.
+  where its target is an approved move into the same scope repo, and that move
+  lands too (step 4 may skip one whose source changed). Otherwise drop the link
+  and keep the words: a link into another scope would show its path, and break
+  on machines without that scope.
 
 ## 3. Show the list, then wait
 
