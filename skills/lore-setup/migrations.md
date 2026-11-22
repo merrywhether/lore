@@ -11,16 +11,20 @@ agents", then push.
 
 ## Schema 1
 
-For a scope repo set up before versioning (its readme has no `schema` field):
+For a scope repo set up before versioning (its readme has no `schema` field, or
+`schema: 0`):
 
 1. Run the `lore` skill's `scripts/check.sh` on it, and fix everything it
-   reports except the missing `schema`:
+   reports except the `schema`:
    - the strict top level: tooling in `skills/<name>/`, never a top-level
      `bin/`, `hooks/` or loose file; the user's working preferences in
-     `agents.md`;
+     `agents.md`. When you move a script, update everything that runs it, such
+     as a generated copy's `rebuild` command, a git hook or a scheduled job;
    - a lowercase `readme.md` whose `scope`, `machines` and `writes` are each one
-     plain line;
-   - an upstream page `repos/<code-repo>.md` with `repo`, `upstream` and `local`
-     for each code repo that has notes.
-2. Add `schema: 1` to the readme's frontmatter.
-3. Run `check.sh` again. It must print `ok`.
+     plain line.
+2. Check by hand that each code repo with notes, in `repos/` or a project, has
+   an upstream page `repos/<code-repo>.md` with `repo`, `upstream` and `local`.
+   `check.sh` checks the pages that exist, but can't tell which are missing.
+3. Set `schema: 1` in the readme's frontmatter, replacing any `schema` line
+   already there.
+4. Run `check.sh` again. It must print `ok`.
