@@ -6,7 +6,7 @@ says so, and the steps are in
 [the `lore-setup` skill's migrations](skills/lore-setup/migrations.md), which
 `lore-setup` applies when you run it again.
 
-## Unreleased
+## 0.2.0 (schema 1)
 
 - `lore-setup reroute` only rebuilds the routing file: it pulls the scopes, and
   reruns `routing.sh --write` if its output differs. The `lore` skill says to
