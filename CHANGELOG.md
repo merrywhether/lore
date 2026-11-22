@@ -8,10 +8,11 @@ says so, and the steps are in
 
 ## Unreleased
 
+- `lore-setup` starts by asking the user to pause other agent sessions on the
+  machine until setup is done.
 - `lore-setup` step 6 asks, for each source it copied, whether to remove the
   original, keep it or replace it with a generated copy, and recommends removing
-  it. It checks the original against the copy again right before removing or
-  replacing it, and leaves one that changed.
+  it.
 - `lore-setup` step 7: when a harness's CLI can't run, a fresh session of that
   harness started in the code checkout does the cold read; never a fork or a
   briefed subagent. The report says whether each check ran in the CLI or a fresh
